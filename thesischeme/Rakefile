@@ -1,0 +1,106 @@
+#======================================================================
+# -*- ruby -*-
+# File: Rakefile
+# About: Build thesischeme
+#
+# Copyright (c) Takumi Iino
+#======================================================================
+
+require 'rake/clean'
+
+
+#==================================================
+# Compiler Options
+#==================================================
+CC       = "gcc"
+CFLAGS   = "-Wall -O0 "#-g3 -gstabs+3 -DDEBUG" #-DGC -DGC_DEBUG
+INCLUDES = "" #-I/usr/include/gc/
+LIBS     = "" #-lgc
+CPPFLAGS = ""
+LDFLAGS  = ""
+
+
+#==================================================
+# Directories
+#==================================================
+SRC_DIR = "src"
+OBJ_DIR = "obj"
+
+
+#==================================================
+# Files
+#==================================================
+SRCS = FileList["#{SRC_DIR}/*.c"]
+OBJS = SRCS.ext('.o').map {|s| s.sub("#{SRC_DIR}/", "#{OBJ_DIR}/")}
+DEPS = SRCS.ext('.d').map {|s| s.sub("#{SRC_DIR}/", "#{OBJ_DIR}/")}
+TARGET = "thesischeme"
+
+CLEAN.include(OBJS)
+CLOBBER.include(["#{OBJ_DIR}/#{TARGET}"] + DEPS)
+
+
+#==================================================
+# Utility
+#==================================================
+def make_dependent_file(dependent_file, src_file)
+  puts "Make dependent files #{dependent_file}"
+  target = dep = nil
+  open("| gcc -MM #{src_file}") do |file|
+    target, dep = file.read.split(':', 2)
+  end
+  dependents = dep.split(/\s+/)
+  dependents.delete('')
+  target = "#{OBJ_DIR}/#{target}"
+  open(dependent_file, 'w') do |file|
+    file.puts( ([target] + dependents).join(',') )
+  end
+end
+
+def make_object_file_rule(src_file, dependent_file)
+  open(dependent_file) do |file|
+    depends = file.read.chomp.split(',')
+    target = depends.shift
+
+    # make object file
+    file target => depends do |t|
+      sh "#{CC} #{CFLAGS} #{INCLUDES} -c -o #{t.name} #{t.prerequisites[0]}"
+    end
+  end
+end
+
+
+#==================================================
+# Tasks
+#==================================================
+task :default => [:all]
+
+task :all =>  [:depend, :object, :target]
+
+desc "Create all dependent files from each source files."
+task :depend => [:make_dependent_rule] + DEPS
+task :make_dependent_rule do
+  SRCS.each do |src_file|
+    dependent_file = src_file.sub("#{SRC_DIR}/","#{OBJ_DIR}/").sub(/\.c$/, '.d')
+    file dependent_file => src_file do |t|
+      make_dependent_file(t.name, t.prerequisites[0])
+    end
+  end
+end
+
+desc "Compile all source files."
+task :object => [:make_object_file_rule] + OBJS
+task :make_object_file_rule => :depend do
+  SRCS.each do |src_file|
+    dependent_file = src_file.sub("#{SRC_DIR}/","#{OBJ_DIR}/").sub(/\.c$/, '.d')
+    make_object_file_rule(src_file, dependent_file)
+  end
+end
+
+desc "Make target object."
+task :target => [:depend, :object, TARGET]
+task TARGET => OBJS do |t|
+  target = "#{OBJ_DIR}/#{t.name}"
+  sh "#{CC} #{CFLAGS} -o #{target} #{t.prerequisites} #{LIBS}"
+end
+
+

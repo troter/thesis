@@ -1,0 +1,27 @@
+div#title h1 {text-align: center;}
+div#title div#authors {text-align: right;}
+
+div#contents h2 {text-indent: 1em;}
+div#contents ul {list-style: none;}
+div#contents ul li.chapter          {text-indent: 0em;}
+div#contents ul li.section          {text-indent: 0em;}
+div#contents ul li.subsection       {text-indent: 0em;}
+div#contents ul li.subsubsection    {text-indent: 0em;}
+div#contents ul li.subsubsubsection {text-indent: 0em;}
+div#contents ul li.appendix         {text-indent: 0em;}
+
+div#text p {text-indent: 1em;}
+div#text p.no_indent {text-indent: 0em;}
+div#text div.figure {text-align: center;}
+div#text div.figure pre {margin: auto; text-align: left;}
+div#text div.figure pre {border: 1px solid black; padding: 5px;}
+div#text div.figure ol  {margin: auto; width: 230px;}
+div#text div.figure li  {text-align: left;}
+div#text div.figure img {}
+div#text div.figure table {margin: auto; text-align: left;}
+div#text div.figure table {border-collapse: collapse;}
+div#text div.figure table {border: 1px solid black;}
+div#text div.figure td    {border: 1px solid black;}
+div#text div.figure th    {border: 1px solid black;}
+div#text div.figure div.caption {font-style: italic;}
+div#text div.reference dl {text-indent: 1em;}

@@ -1,0 +1,137 @@
+= scheme memo
+
+== spec
+
+=== language spec
+- static scope
+- tail recursion optimize
+- Lisp-1
+
+=== special form
+quote cond set! lambda macro
+
+=== primitive function
+car cdr cons assq map
+atom eq <
+write display newline
++ - * /
+eval apply intern
+set-car! set-cdr!
+
+/*
+ * TODO:
+ */
+
+/*
+ * 命名規則
+ *
+ * struct StructName
+ * enum Scheme_hogehoge
+ * macro MACRO_NAME
+ * function name_hoge
+ * variable name_hoge
+ *
+ * 命名規則そのに
+ * structは名詞
+ * enumの要素はタグ名がプレフィックス
+ * macroは全て大文字
+ * primitiveのc言語名のプレフィックスはSchemePrimitive
+ */
+/*
+ * メモ
+ *
+ * 関数の種類にはどんなものがある
+ * expr lexpr
+ * nexpr fexpr
+
+ */
+
+
+/* Built-in Procedure...
+現在の状況。
+組込み関数の作成。構造体を考えたりする。
+
+構造体には引数が必要。
+マクロを使って、自動的に登録する仕組みが必要。
+とりあえず、関数の作成に全力をあげる。
+環境も、もっと新しいインターフェイスが必要。
+
+eval時に指定している環境を取り除く
+グローバル変数などで、現在の環境を定義するのがよい？
+将来はletやlambdaなどが、現在の環境をスタックのように操作する。
+(スコープを抜けたら、環境を元に戻すなど。)
+
+引数の数を持つ必要がある
+emacs. stklosなどは引数の数を保持している。
+evalでエラーにできるからここの関数で引数チェックを行う必要はなくなる？
+lambda式のドットリストの扱いも考える
+ */
+
+* GC
+cons cellのみをMark and sweepの対象とする。
+cons cellが指しているatomはリファレンスカウントで回収を行う。
+
+* 定数
+nil, true, eofなどは定数にした方がよかった、、
+
+null constant
+真偽値 constant
+シンボル
+文字 constant
+数値 -+-整数 constant
+      |-その他 
+ペア
+ベクター
+文字列
+
+定数
+false true null undefined unspecified eof
+
+|00 pointer
+|01 integer 
+|10
+|11 constant
+
+
+
+  // stklos
+  /*
+   * Internal representation of SCM object. Object use the two least
+   * significant bit as tag. We have the following representation 
+   *
+   *     .........00		pointer on an object descriptor (a box)
+   *     .........01		integer 
+   *     .........10		small object (see below for more detail)
+   *     .........11		small constant (#t #f '() ... see below for details)
+   */
+
+  /****
+   **** Integer
+   ****/
+  /* As said before, integers are not allocated but have their two
+   * least significant bits set to 01.
+   */
+
+#define INT_VAL(p)	(((long) p) >> 2)
+#define INTP(p)		((((unsigned long) p) & 3) == 1)
+#define SCM_LONG(n)	(((n) << 2) | 1)
+#define MAKE_INT(n)	(AS_SCM(SCM_LONG(n)))
+#define INT_MIN_VAL	((LONG_MIN & ~3) >> 2)
+#define INT_MAX_VAL	((LONG_MAX & ~3) >> 2)
+
+
+#define MAKE_SCONST(n)   (AS_SCM(n << 2 | 3))
+
+/* Special constants */
+
+#define STk_nil		((SCM) MAKE_SCONST(0))
+#define STk_false 	((SCM) MAKE_SCONST(1))
+#define STk_true	((SCM) MAKE_SCONST(2))
+#define STk_eof   	((SCM) MAKE_SCONST(3))
+#define STk_void 	((SCM) MAKE_SCONST(4))
+
+#define STk_dot		((SCM) MAKE_SCONST(5)) /* special pupose value see read.c */
+#define STk_close_par	((SCM) MAKE_SCONST(6)) /* special pupose value see read.c */
+
+
+#define MAKE_SCM_CONSTANT(AS_SCM)
