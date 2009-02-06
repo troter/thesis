@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="EUC-JP"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=EUC-JP" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="./include/default.css" />
-    <title>���١������쥯�����μ���ˡ��ɾ��</title>
+    <title>ガベージコレクションの実装法と評価</title>
   </head>
 
   <body>
@@ -13,12 +13,12 @@
 
 
     <div id="title">
-      <h1>���١������쥯�����μ���ˡ��ɾ��</h1>
+      <h1>ガベージコレクションの実装法と評価</h1>
       <div id="authors">
 	<dl>
-	  <dt>�ͥåȥ�������ƥฦ�漼</dt>
-	  <dt>��Ƴ���� : ���� ľ�� �ڶ���</dt>
-	  <dt>04KC009 : ���� �</dt>
+	  <dt>ネットワークシステム研究室</dt>
+	  <dt>指導教員 : 坂本 直志 准教授</dt>
+	  <dt>04KC009 : 飯野 卓見</dt>
 	</dl>
       </div>
     </div>
@@ -26,95 +26,95 @@
 
 
     <div id="contents">
-      <h2>�ܼ�</h2>
+      <h2>目次</h2>
       <ul>
-	<li class="chapter"><a href="#hl.1">1.�Ϥ����</a></li>
+	<li class="chapter"><a href="#hl.1">1.はじめに</a></li>
 
-	<li class="chapter"><a href="#hl.2">2.���١������쥯�����</a></li>
+	<li class="chapter"><a href="#hl.2">2.ガベージコレクション</a></li>
 	<li><ul>
-	    <li class="section"><a href="#hl.2.1">2.1.���١������쥯������ɬ����</a></li>
+	    <li class="section"><a href="#hl.2.1">2.1.ガベージコレクションの必要性</a></li>
 	    <li><ul>
-		<li class="subsection"><a href="#hl.2.1.1">2.1.1.�� : �㳰</a></li>
+		<li class="subsection"><a href="#hl.2.1.1">2.1.1.例 : 例外</a></li>
 		<li><ul>
 		    <li class="subsubsection"><a href="#hl.2.1.1.1">2.1.1.1.C++</a></li>
 		    <li class="subsubsection"><a href="#hl.2.1.1.2">2.1.1.1.Java</a></li>
 		</ul></li>
-		<li class="subsection"><a href="#hl.2.1.2">2.1.2.�� : �ץ�����ߥ󥰥�������</a></li>
+		<li class="subsection"><a href="#hl.2.1.2">2.1.2.例 : プログラミングスタイル</a></li>
 		<li><ul>
 		    <li class="subsubsection"><a href="#hl.2.1.2.1">2.1.2.1.C</a></li>
 		    <li class="subsubsection"><a href="#hl.2.1.2.2">2.1.2.2.Java</a></li>
 		</ul></li>
 	    </ul></li>
-	    <li class="section"><a href="#hl.2.2">2.2.���١������쥯������®��</a></li>
-	    <li class="section"><a href="#hl.2.3">2.3.GC�Υ��르�ꥺ��</a></li>
+	    <li class="section"><a href="#hl.2.2">2.2.ガベージコレクションの速度</a></li>
+	    <li class="section"><a href="#hl.2.3">2.3.GCのアルゴリズム</a></li>
 	    <li><ul>
-		<li class="subsection"><a href="#hl.2.3.1">2.3.1.���ȥ������</a></li>
+		<li class="subsection"><a href="#hl.2.3.1">2.3.1.参照カウント</a></li>
 		<li class="subsection"><a href="#hl.2.3.2">2.3.2.Tracing collectors</a></li>
 		<li><ul>
-		    <li class="subsubsection"><a href="#hl.2.3.2.1">2.3.2.1.�ޡ�������ɥ�������</a></li>
-		    <li class="subsubsection"><a href="#hl.2.3.2.2">2.3.2.2.���ԡ�</a></li>
+		    <li class="subsubsection"><a href="#hl.2.3.2.1">2.3.2.1.マークアンドスイープ</a></li>
+		    <li class="subsubsection"><a href="#hl.2.3.2.2">2.3.2.2.コピー</a></li>
 		</ul></li>
 	    </ul></li>
-	    <li class="section"><a href="#hl.2.4">2.4.���� vs �ݼ�Ū</a></li>
+	    <li class="section"><a href="#hl.2.4">2.4.正確 vs 保守的</a></li>
 	</ul></li>
 
 
 	<li class="chapter"><a href="#hl.3">3.Lisp</a></li>
 	<li><ul>
-	    <li class="section"><a href="#hl.3.1">3.1.��ħ�ȥץ���������</a></li>
+	    <li class="section"><a href="#hl.3.1">3.1.特徴とプログラムの例</a></li>
 	    <li><ul>
 		<li class="subsection"><a href="#hl.3.1.1">3.1.1.Atom</a></li>
 		<li class="subsection"><a href="#hl.3.1.2">3.1.2.Cons Cell</a></li>
-		<li class="subsection"><a href="#hl.3.1.3">3.1.3.S��</a></li>
-		<li class="subsection"><a href="#hl.3.1.4">3.1.4.�ץ������</a></li>
+		<li class="subsection"><a href="#hl.3.1.3">3.1.3.S式</a></li>
+		<li class="subsection"><a href="#hl.3.1.4">3.1.4.プログラム</a></li>
 		<li><ul>
-		    <li class="subsubsection"><a href="#hl.3.1.4.1">3.1.4.1.�ü����</a></li>
+		    <li class="subsubsection"><a href="#hl.3.1.4.1">3.1.4.1.特殊形式</a></li>
 		    <li><ul>
 			<li class="subsubsubsection"><a href="#hl.3.1.4.1.1">3.1.4.1.1.quote</a></li>
 			<li class="subsubsubsection"><a href="#hl.3.1.4.1.2">3.1.4.1.2.set!</a></li>
 			<li class="subsubsubsection"><a href="#hl.3.1.4.1.3">3.1.4.1.3.cond</a></li>
 			<li class="subsubsubsection"><a href="#hl.3.1.4.1.4">3.1.4.1.4.lambda</a></li>
 		    </ul></li>
-		    <li class="subsection"><a href="#hl.3.1.5">3.1.5.�Ķ�</a></li>
+		    <li class="subsection"><a href="#hl.3.1.5">3.1.5.環境</a></li>
 		</ul></li>
 	    </ul></li>
-	    <li class="section"><a href="#hl.3.2">3.2.LISP��GC</a></li>
+	    <li class="section"><a href="#hl.3.2">3.2.LISPとGC</a></li>
 	</ul></li>
 
-	<li class="chapter"><a href="#hl.4">4.GC��°LISP������</a></li>
+	<li class="chapter"><a href="#hl.4">4.GC付属LISP処理系</a></li>
 	<li><ul>
-	    <li class="section"><a href="#hl.4.1">4.1.LISP�����Ϥι�¤</a></li>
-	    <li class="section"><a href="#hl.4.2">4.2.��������</a></li>
-	    <li class="section"><a href="#hl.4.3">4.3.����</a></li>
+	    <li class="section"><a href="#hl.4.1">4.1.LISP処理系の構造</a></li>
+	    <li class="section"><a href="#hl.4.2">4.2.作成言語</a></li>
+	    <li class="section"><a href="#hl.4.3">4.3.作成</a></li>
 	    <li><ul>
-		<li class="subsection"><a href="#hl.4.3.1">4.3.1.�ǡ�����¤</a></li>
-		<li class="subsection"><a href="#hl.4.3.2">4.3.2.����ܥ�ơ��֥�</a></li>
+		<li class="subsection"><a href="#hl.4.3.1">4.3.1.データ構造</a></li>
+		<li class="subsection"><a href="#hl.4.3.2">4.3.2.シンボルテーブル</a></li>
 		<li class="subsection"><a href="#hl.4.3.3">4.3.3.reader</a></li>
 		<li class="subsection"><a href="#hl.4.3.4">4.3.4.print</a></li>
-		<li class="subsection"><a href="#hl.4.3.5">4.3.5.�Ķ�</a></li>
+		<li class="subsection"><a href="#hl.4.3.5">4.3.5.環境</a></li>
 		<li class="subsection"><a href="#hl.4.3.6">4.3.6.Static scope</a></li>
-		<li class="subsection"><a href="#hl.4.3.7">4.3.7.ɾ��</a></li>
+		<li class="subsection"><a href="#hl.4.3.7">4.3.7.評価</a></li>
 	    </ul></li>
-	    <li class="section"><a href="#hl.4.4">4.4.GC������</a></li>
+	    <li class="section"><a href="#hl.4.4">4.4.GCの制作</a></li>
 	    <li><ul>
 		<li class="subsection"><a href="#hl.4.4.1">4.4.1.Cell allocator</a></li>
-		<li class="subsection"><a href="#hl.4.4.2">4.4.2.�ޡ�������ɥ�������</a></li>
-		<li class="subsection"><a href="#hl.4.4.3">4.4.3.�ݼ�ŪGC����ˡ</a></li>
+		<li class="subsection"><a href="#hl.4.4.2">4.4.2.マークアンドスイープ</a></li>
+		<li class="subsection"><a href="#hl.4.4.3">4.4.3.保守的GCの方法</a></li>
 	    </ul></li>
 	</ul></li>
 	
-	<li class="chapter"><a href="#hl.5">5.ɾ��</a></li>
+	<li class="chapter"><a href="#hl.5">5.評価</a></li>
 	<li><ul>
-	    <li class="section"><a href="#hl.5.1">5.1.��ǽ���</a></li>
-	    <li class="section"><a href="#hl.5.2">5.2.��������Ϥ�GC�η��ط�</a></li>
-	    <li class="section"><a href="#hl.5.3">5.3.�ץ��������ݼ�</a></li>
+	    <li class="section"><a href="#hl.5.1">5.1.性能比較</a></li>
+	    <li class="section"><a href="#hl.5.2">5.2.言語処理系とGCの結合関係</a></li>
+	    <li class="section"><a href="#hl.5.3">5.3.プログラムの保守</a></li>
 	</ul></li>
 
-	<li class="chapter"><a href="#hl.6">6.�ޤȤ�</a></li>
+	<li class="chapter"><a href="#hl.6">6.まとめ</a></li>
 
-	<li class="chapter"><a href="#hl.7">7.����ʸ��</a></li>
+	<li class="chapter"><a href="#hl.7">7.参考文献</a></li>
 
-	<li class="appendix"><a href="#a.1">��Ͽ1 ��������LISP�����ϤΥ�����������</a></li>
+	<li class="appendix"><a href="#a.1">付録1 作成したLISP処理系のソースコード</a></li>
       </ul>
     </div>
 
@@ -127,39 +127,39 @@
     <div id="text">
 
 
-      <h2 id="hl.1">1.�Ϥ����</h2>
-      <p>�ץ�����ߥ󥰸���Ȥϥ����ƥಽ�����о�ʪ����ݲ���������ԥ塼���ǽ�����ǽ�ʥ����ɤ򵭽Ҥ��뤿����Ѥ���͹�����Ǥ��롣�ץ�����ߥ󥰸���ϥ���ԥ塼���ε�����Ȱ��а���б����ä�������֥餫��Ϥޤꡢ����ѥ�����Ѥ��Ƶ�������������뤳�Ȥ�����Ȥ�������ѥ�����졢���󥿥ץ꥿�ȸƤФ��ץ�����ब�����������ɤ��ᤷ�¹Ԥ��륹����ץȸ���ȡ����ҤǤ�������٤���������ؤȿʲ����Ƥ�����</p>
-      <p>�ץ�����ߥ󥰸���Ϥ���¸����ͳ���顢�������٤ι⤤���Ҥ��Ԥ��뤳�ȡ����Ф䤤��ȯ��Ԥ�����������롣����٤ι⤤���ҤȤϡ��ץ�����ब�ɤ�����������Ԥ���(HOW)�ǤϤʤ����ν�����Ԥ���(WHAT)�򵭽Ҥ��䤹����ʸ����ǽ����äƤ��뤳�Ȥ򡢤��Ф䤤��ȯ�Ȥϵ������ι⤵�������ɤ�̩�٤ι⤵���Х���ȯ�����ˤ�����ʸ����ǽ����äƤ��뤳�Ȥ򤵤���</p>
-      <p>��������٤ι⤤���ҡ����Ф䤤��ȯ��Ԥ�˸���ˤʤ�Τ������ΰ�δ����Ǥ��롣�����ΰ��ưŪ���ݤ�Ԥ����ʤɡ�����ԥ塼������ݲ�����Ƥ��ʤ���ʬ��ľ�ܥץ�����ޤ�����ɬ�פ������롣�����ΰ�������ΰ��������������������˺��ˤ�����꡼���ʤɤΥХ��Ⱦ���٤��碌�Ǥ��롣��������Ϥι�ʸ�ڤʤɡ�ʣ���ʻ��Ȥ��Ԥ��Ƥ���ǡ�����¤�ǤϤȤ��˵����ΰ�γ���������Ȥʤ롣</p>
-      <p>������������褹�뤿��ε��������١������쥯�����Ǥ��롣���١������쥯�����ϵ����ΰ��ưŪ���ݡ���������ݲ������ץ�����ޤ�����Ū�˴�����Ԥ�ɬ�פ򸺤餹���ܸ���Ǥϡ����١������쥯������LISP�Ȥ����ץ�����ߥ󥰸�������Ϥ˼������뤳�Ȥˤ�ꡢ������ˡ�ʤɤθ�Ƥ��Ԥä���</p>
+      <h2 id="hl.1">1.はじめに</h2>
+      <p>プログラミング言語とはシステム化する対象物を抽象化し、コンピュータで処理可能なコードを記述するために用いる人工言語である。プログラミング言語はコンピュータの機械語と一対一の対応をもったアセンブラから始まり、コンパイラを用いて機械語に翻訳することを前提としたコンパイラ言語、インタプリタと呼ばれるプログラムがソースコードを解釈し実行するスクリプト言語と、記述できる抽象度を高める方向へと進化してきた。</p>
+      <p>プログラミング言語はその存在理由から、より抽象度の高い記述が行えること、すばやい開発を行える事が求められる。抽象度の高い記述とは、プログラムがどういう処理を行うか(HOW)ではなく何の処理を行うか(WHAT)を記述しやすい構文、機能を持っていることを、すばやい開発とは記述性の高さ、コードの密度の高さ、バグの発生しにくい構文、機能を持っていることをさす。</p>
+      <p>この抽象度の高い記述、すばやい開発を行う妨げになるのが記憶領域の管理である。記憶領域の動的確保を行う場合など、コンピュータの抽象化されていない部分を直接プログラマが操作する必要が生じる。記憶領域の操作は領域の不正アクセス、開放忘れによるメモリリークなどのバグと常に隣り合わせである。言語処理系の構文木など、複雑な参照が行われているデータ構造ではとくに記憶領域の開放が問題となる。</p>
+      <p>これらの問題を解決するための機構がガベージコレクションである。ガベージコレクションは記憶領域の動的確保、開放を抽象化し、プログラマが明示的に管理を行う必要を減らす。本研究では、ガベージコレクションをLISPというプログラミング言語処理系に実装することにより、実装方法などの検討を行った。</p>
 
 
-      <h2 id="hl.2">2.���١������쥯�����</h2>
-      <p>���١������쥯������GC��ά���ˤϥץ�����ߥ󥰸�������ϡʰʲ���������ϡˤΰ����⤷���ϥ饤�֥��Ȥ����󶡤���롢ưŪ�˳��ݤ��������ΰ�Τ������Ѥ���Ƥ��ʤ������ΰ��ưŪ�˲�����������Ѥޤ��ϳ�����Ԥ������Ǥ��롣</p>
-      <p>GC��Ƴ�����뤳�Ȥˤ��ץ�����ޤϼ�ư�Ǥε����ΰ�δ������鳫������롣</p>
+      <h2 id="hl.2">2.ガベージコレクション</h2>
+      <p>ガベージコレクション（GCと略す）はプログラミング言語処理系（以下言語処理系）の一部もしくはライブラリとして提供される、動的に確保した記憶領域のうち利用されていない記憶領域を自動的に回収し、再利用または開放を行う機構である。</p>
+      <p>GCを導入することによりプログラマは手動での記憶領域の管理から開放される。</p>
 
 
-      <h3 id="hl.2.1">2.1.���١������쥯������ɬ����</h3>
-      <p>GC�϶�ǯ�θ�������ϤǤ�ɬ�ܤε�ǽ�Ȥ����󶡤���Ƥ��뤬�������װ��Ȥ��Ƥϡ�</p>
+      <h3 id="hl.2.1">2.1.ガベージコレクションの必要性</h3>
+      <p>GCは近年の言語処理系では必須の機能として提供されているが、この要因としては、</p>
       <ul>
-	<li>��������Ϥ��󶡤��뵡ǽ�ι��ٲ�</li>
-	<li>����Ū�ʴ�����Ԥ��ȼ¸����ˤ����ץ�����ߥ󥰥�������μ�ή��</li>
-	<li>����ԥ塼���ι�®�������̲��ˤ�ꡢ�¹Ը�Ψ��곫ȯ��Ψ��������褦�ˤʤä�</li>
+	<li>言語処理系の提供する機能の高度化</li>
+	<li>明示的な管理を行うと実現しにくいプログラミングスタイルの主流化</li>
+	<li>コンピュータの高速、大容量化により、実行効率より開発効率が求められるようになった</li>
       </ul>
-      <p class="no_indent">�ʤɤ��ͤ����롣</p>
+      <p class="no_indent">などが考えられる。</p>
 
 
-      <h4 id="hl.2.1.1">2.1.1.�� : �㳰</h4>
-      <p>�㳰�Ȥϥץ������¹���ˤ��������Թ��������뤿���ʬ���Ǥ��롣���Թ���н褵���Ȥν��������Ф褤�����ե���������ʤɤλ񸻳��ݤμ��Ԥʤɼ���֤��ΤĤ��ʤ����Թ���Ф��ƤϽ����η�³�򤢤����ʤ���Фʤ�ʤ������ξ�硢����ޤǤν����ǳ��ݤ����񸻤γ���������Ȥʤ롣</p>
-      <p>�����Ǥ�GC��¸�ߤ��㳰�����Ѥ����ץ�����ߥ󥰤ˤɤΤ褦�ʱƶ���Ϳ���뤫��Ҥ٤롣�ץ���������Ȥ���C++��Java�򤢤����㳰�����Ѥ����ץ������Ȥ��ƥ��󥹥ȥ饯�����㳰��ȯ�������륯�饹��������롣</p>
+      <h4 id="hl.2.1.1">2.1.1.例 : 例外</h4>
+      <p>例外とはプログラム実行中におこる不都合を処理するための分岐である。不都合は対処されもとの処理に戻ればよいが、ファイルやメモリなどの資源確保の失敗など取り返しのつかない不都合に対しては処理の継続をあきらめなければならない。その場合、それまでの処理で確保した資源の開放が問題となる。</p>
+      <p>ここではGCの存在が例外を利用したプログラミングにどのような影響を与えるかを述べる。プログラムの例としてC++とJavaをあげ、例外を利用したプログラムとしてコンストラクタで例外を発生させるクラスを作成する。</p>
 
 
       <h5 id="hl.2.1.1.1">2.1.1.1.C++</h5>
-      <p>Figure 1.��Figure 2.�ϥե������������륯�饹�����Ѥ����ץ������Ǥ��롣</p>
-      <p>C++��ɸ��饤�֥��Ͻ������Ǥ��㳰��ȯ�������뤳�Ȥ�̵�����ᡢ�̾���㳰��ȯ�������ʤ�Figure 1.�Τ褦�ʥץ�����ߥ󥰥������뤬��ή�Ǥ��뤬�������Ǥ�Figure 2.�Τ褦�˰տ�Ū���㳰��ȯ������Ĥ��Ƥ��롣Figure 2.�����Ƥ��㳰����ª���ƥ��󥹥ȥ饯�������㳰��ϳ��ʤ��褦���Ҥ��Ƥ��롣</p>
-      <p>C++�Ǥϥ��󥹥ȥ饯�����㳰��ȯ�����ƽ��������Ǥ��Ƥ��ޤä����˥ǥ��ȥ饯�����ƤӽФ���ʤ��Ȥ���ͭ̾�ʥХ���¸�ߤ��롣�ޤ����ǥ��ȥ饯�����㳰��ȯ��������硢�㳰���饹������㳰��ȯ���������Ƹ����񤷤��Х��ˤʤ롣�㳰���饹������㳰��ȯ��������ɽŪ����Ȥ��Ƥϡ�bad_alloc�㳰��ȯ�����������ǡ��㳰���֥������Ȥ�������뤿���new��Ȥ�������bad_alloc��ȯ����������ʤɤ����롣�����ΥХ���ȯ�����뤳�Ȥ��񤷤���</p>
-      <p>���Τ��ᡢ���󥹥ȥ饯�����ǥ��ȥ饯���ν������㳰�ˤ�����Ǥ��뤳�Ȥϵ�����ʤ����ĤޤꡢC++�Ǥ��㳰����(�㳰��ȯ�����Ƥ���������Ǥ���ʤ�����)�ʥ��󥹥ȥ饯�������饹��������뤳�Ȥ������ʥץ��������������ɬ�׾��Ǥ��롣�����Τ��Ȥ��顢C++���㳰�Ȥ��������������줿��������㳰�����Ѥ��뤿��λ񸻴�����ץ�����ޤ˶�����褦�ˤʤäƤ��ޤä�����</p>
-      <p>�����ϻ񸻴�����ץ�����ޤ��Ԥ�ɬ�פ��������롣GC��¸�ߤ���Ф��Τ褦�˻񸻤β����ˤĤ������դ�����륳���Ȥ��ڸ�����롣</p>
+      <p>Figure 1.とFigure 2.はファイルを管理するクラスを利用したプログラムである。</p>
+      <p>C++の標準ライブラリは初期設定では例外を発生させることは無いため、通常は例外を発生させないFigure 1.のようなプログラミングスタイルが主流であるが、ここではFigure 2.のように意図的に例外の発生を許可している。Figure 2.は全ての例外を捕捉してコンストラクタ外に例外が漏れないよう記述している。</p>
+      <p>C++ではコンストラクタで例外が発生して処理が中断してしまった場合にデストラクタが呼び出されないという有名なバグが存在する。また、デストラクタで例外が発生した場合、例外クラスの中で例外が発生する場合も再現が難しいバグになる。例外クラスの中で例外が発生する代表的な例としては、bad_alloc例外が発生した状況で、例外オブジェクトを作成するためにnewを使い、再度bad_allocを発生させる場合などがある。これらのバグは発見することが難しい。</p>
+      <p>このため、コンストラクタ、デストラクタの処理が例外により中断することは許されない。つまり、C++では例外安全(例外が発生しても処理が中断されないこと)なコンストラクタ、クラスを作成することが安全なプログラムを作成する必要条件である。これらのことから、C++は例外という機構を取り入れたがために例外を利用するための資源管理をプログラマに強いるようになってしまった。　</p>
+      <p>これらは資源管理をプログラマが行う必要から生じる。GCが存在すればこのように資源の解放について注意を向けるコストが軽減される。</p>
       <div class="figure">
 	<pre><code>#include &lt;iostream&gt;
 #include &lt;fstream&gt;
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
 	<pre><code>#include &lt;iostream&gt;
 #include &lt;fstream&gt;
 #include &lt;string&gt;
-#include &lt;new&gt; // new �黻�Ҥ��㳰ȯ������Ĥ���
+#include &lt;new&gt; // new 演算子の例外発生を許可する
 
 class file_io {
 private:
@@ -222,7 +222,7 @@ public:
             is_fail_ = true;
             return ;
         }
-        // �㳰����Ĥ���
+        // 例外を許可する
         ifs_-&gt;exceptions(std::ios_base::failbit);
         ofs_-&gt;exceptions(std::ios_base::failbit);
         try {
@@ -247,7 +247,7 @@ int main(int argc, char **argv) {
 
 
       <h5 id="hl.2.1.1.2">2.1.1.2.Java</h5>
-      <p>Figure 3.��Java�Ǥ���Ǥ��롣���Υץ������Ǥ�FileIO���饹�Υ��֥������Ȥ�����Ȥ��˥��󥹥ȥ饯�����ƤФ�롣���󥹥ȥ饯���ϥե�����̾������˼�ꡢFileInputStream��������롣�ե����뤬¸�ߤ��ʤ����ˤ�java.io.FileNotFoundException��ȯ�����롣Java�Ǥϥ��󥹥ȥ饯����Ǥ��㳰�θƤӽФ�������Ƥ�ǥ��ȥ饯���Ժߤˤ褦����꡼����GC��¸�ߤ��뤿��ȯ�����ʤ���</p>
+      <p>Figure 3.はJavaでの例である。このプログラムではFileIOクラスのオブジェクトを得るときにコンストラクタが呼ばれる。コンストラクタはファイル名を引数に取り、FileInputStreamを作成する。ファイルが存在しない場合にはjava.io.FileNotFoundExceptionが発生する。Javaではコンストラクタ内での例外の呼び出しがされてもデストラクタ不在にようメモリリークはGCが存在するため発生しない。</p>
       <div class="figure">
 	<pre><code>import java.io.*;
 
@@ -276,14 +276,14 @@ class ExceptionWithGC {
       </div>
 
 
-      <h4 id="hl.2.1.2">2.1.2.�� : �ץ�����ߥ󥰥�������</h4>
-      <p>ʸ����γ�ĥ�����󤲤롣Java�Ǥ�ʸ����γ�ĥ��C�Ǥγ�ĥ����򼨤���</p>
+      <h4 id="hl.2.1.2">2.1.2.例 : プログラミングスタイル</h4>
+      <p>文字列の拡張の例を挙げる。Javaでの文字列の拡張とCでの拡張の例を示す。</p>
 
 
       <h5 id="hl.2.1.2.1">2.1.2.1.C</h5>
-      <p>Figure 4.��ɸ�����Ϥ�����ʸ������ɤ߹���ץ������Ǥ��롣</p>
-      <p>���Υץ������ϰ�ʸ���ɤ߹������Хåե����ĥ���ơ���ʸ���ɲä��Ƥ��������Ԥ⤷����EOF��ã�����顢�Хåե�����strdup��ʸ�����ʣ����������ʣ������ʸ������֤��Ƥ��롣</p>
-      <p>C�Υץ������Ǥ�ʸ����ؤ�ʸ�����ɲäȵ����ΰ�δ�����ʬΥ�Ǥ����ˡ�����ΰ�̣������Ƥ��ޤäƤ��롣</p>
+      <p>Figure 4.は標準入力から一行文字列を読み込むプログラムである。</p>
+      <p>このプログラムは一文字読み込んだ後バッファを拡張して、一文字追加していく。改行もしくはEOFに達したら、バッファからstrdupで文字列を複製し、その複製した文字列を返している。</p>
+      <p>Cのプログラムでは文字列への文字の追加と記憶領域の管理が分離できずに、本来の意味が薄れてしまっている。</p>
       <div class="figure">
 	<pre><code>#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
@@ -295,7 +295,7 @@ char *freadline(FILE* in)
 
   buffer = malloc(1);
   if (buffer == NULL) goto END;
-  buffer[0] = ��\0��;
+  buffer[0] = “\0”;
 
   while ((c = fgetchar(in)) != EOF) {
     tmp = realloc(buffer, strlen(buffer) + 2);
@@ -303,8 +303,8 @@ char *freadline(FILE* in)
     buffer = tmp;
     tmp = tmp + strlen(buffer);
     *tmp++  = c;
-    *tmp = ��\0��;
-    if (c == ��\n��) break;
+    *tmp = “\0”;
+    if (c == “\n”) break;
   }
 END:
   return buffer;
@@ -313,7 +313,7 @@ END:
 int main(void)
 {
   char * line = readline(stdin);
-  printf(��%s��, line);
+  printf(“%s”, line);
   free(line);
 }
 </code></pre>
@@ -322,8 +322,8 @@ int main(void)
 
 
       <h5 id="hl.2.1.2.2">2.1.2.2.Java</h5>
-      <p>Figure 5.��Figure 4.��Java�ǽ�ľ�����ץ������Ǥ��롣</p>
-      <p>��ʸ���ɤ߹��ऴ�Ȥ˲��Ѥ�ʸ�����ʸ�����ɲä��Ƥ��������ʬ�ɤ߹���������Ĺʸ���󤫤�ʸ������Ѵ���Ԥäơ�ʸ������֤��Ƥ��롣���Υץ������Υ���������ϥ��������ԤäƤ�����ʬ�ϱ��ä��졢���ˤ狼��䤹�������������ɤȤʤäƤ��롣</p>
+      <p>Figure 5.はFigure 4.をJavaで書き直したプログラムである。</p>
+      <p>一文字読み込むごとに可変の文字列に文字を追加していき、一行分読み込んだら可変長文字列から文字列へ変換を行って、文字列を返している。このプログラムのソースからはメモリ管理を行っている部分は隠蔽され、非常にわかりやすいソースコードとなっている。</p>
       <div class="figure">
 	<pre><code>class ReadLine {
   static public String readline(InputStream is) {
@@ -342,311 +342,311 @@ int main(void)
 </code></pre>
 	<div class="caption">Figure 5. ReadLine.java</div>
       </div>
-      <p>������Ǥϥץ������ε���������������������֤��Ƥ��롣�ºݤΥץ�����೫ȯ�Ǥϥץ��������ݼ顢��ĥ�ʳ��Ǥ�����Ĥ����Ǥ��礤�˱ƶ����Ƥ��롣�ݼ��Ԥ��ˤ��ݼ餹��ץ�����������ɬ�פȤʤ롣Figure 5.�Τ褦�˵����ΰ�δ��������ä���Ƥ���ȡ�����Υץ������ΰ�̣�����򤷤䤹���ʤ롣</p>
-      <p>������Ĥ���ΤȤ��ꡢGC�����Ѥ��뤳�Ȥˤ��ץ�����ߥ󥰤μ�֤������˾ʤ��졢GC�Τʤ���������ϤǤϹԤ��ˤ�������Ū�ν������������ܤ����ץ�����ߥ󥰤����ѤǤ���褦�ˤʤ롣</p>
-      <p>�ޤ������������GC�˰�Ǥ���뤳�Ȥˤ�ꡢʸ�������ʤɤ������䤹���ץ�����ޤΥߥ��ˤ�������ΰ�ؤΥ�����������������ΰ�γ������ΰ����ų���������꡼����ڸ��Ǥ��뤳�Ȥ�Ǥ��롣������ˤ�ꡢ��������ѥ����ɤ�ɬ�פʤ��ʤ뤳�Ȥˤ�륽���������ɤδʷ餵�θ��塢�����Ϣ�ΥǥХå��Υ����Ȥηڸ��ʤɳ�ȯ��Ψ�θ��夬�����롣</p>
+      <p>この例ではプログラムの記述性、可読性を重点に置いている。実際のプログラム開発ではプログラムの保守、拡張段階でこの二つの要素が大いに影響してくる。保守を行うには保守するプログラムの理解が必要となる。Figure 5.のように記憶領域の管理が隠蔽されていると、本来のプログラムの意味が理解しやすくなる。</p>
+      <p>この二つの例のとおり、GCを利用することによりプログラミングの手間が大幅に省かれ、GCのない言語処理系では行いにくい、目的の処理だけに注目したプログラミングも利用できるようになる。</p>
+      <p>また、メモリ管理をGCに一任することにより、文字列操作などで生じやすいプログラマのミスによる不正領域へのアクセス、利用中の領域の開放や領域の二重開放、メモリリークを軽減できることもできる。　これにより、メモリ管理用コードが必要なくなることによるソースコードの簡潔さの向上、メモリ関連のデバッグのコストの軽減など開発効率の向上が得られる。</p>
 
 
-      <h3 id="hl.2.2">2.2.���١������쥯������®��</h3>
-      <p>����Ū��malloc/free�����Ѥ�����ư�ǤΥ�����������GC����������®�٤��٤��ȹͤ���줬����������ϴְ㤤�Ǥ��롣���곫���Υ����Ȥ��Ѳ�����ΤǤϤʤ�����ư�ǥ��������Ԥ������Ȥ�ʬ�����뤫��GC�����Ѥ��ƽ��椷�ƹԤ����κ��Ǥ��롣�������äơ�®�٤Τ褷������ʬ��������ˤ����åȤ���Ӥ�������˰�¸���롣</p>
-      <p>����Ȥ��̤ˡ�����ξ�ﲼ�Ǥ�GC��malloc/free�ȤǤ�®�٤κ��������˸�����㤬���롣</p>
-      <p>GC��®�٤��Ǥ���Ȥ��Ƥ�malloc/free�μ����˼��Ԥ��Ƥ��Ƥ����礬���롣�̾�GC�Ǥϵ���ʵ����ΰ����ݤ��Ƥ����ΰ�Τ���ɬ�פ��ΰ��GC���ڤ���ꤷ�ƴ�����Ԥ������Τ���malloc/free�μ����˺������줺�������ǽ���������ǽ�����⤤��</p>
-      <p>malloc/free���ᤤ��Ȥ��Ƥϡ����̤ε����ΰ�����Ѥ�������ˤ��ε����ΰ�ΤۤȤ�ɤ����Ѥ������Ǥ��롣���ξ�硢GC��ȯ�������٤����̤ε����ΰ���������ʤ���Фʤ�ʤ������ξ�硢malloc/free��ɬ�פʤ��ΰ��������������ˡ��®�٤������롣</p>
-      <p>���Τ褦�ˡ����򤽤�����к��������뤬�������Ȥ������̤�Ϥ��������ˤ��뤿�ᡢ�������줿�����ǤϺ��������ʤ��ȹͤ��뤳�Ȥ��Ǥ��롣</p>
+      <h3 id="hl.2.2">2.2.ガベージコレクションの速度</h3>
+      <p>一般的にmalloc/freeを利用した手動でのメモリ管理と比べGCの方が処理速度が遅いと考えられがちだがこれは間違いである。メモリ開放のコストが変化するのではなく、手動でメモリ管理を行いコストを分散するか、GCを利用して集中して行うかの差である。したがって、速度のよしあしは分散、集中によるメリットを比較するだけに依存する。</p>
+      <p>これとは別に、特定の条件下ではGCとmalloc/freeとでは速度の差が顕著に現れる例がある。</p>
+      <p>GCの速度がでる場合としてはmalloc/freeの実装に失敗していている場合がある。通常GCでは巨大な記憶領域を確保してその領域のうち必要な領域をGCが切り売りして管理を行う。そのためmalloc/freeの実装に左右されず一定の性能を得られる可能性が高い。</p>
+      <p>malloc/freeが早い例としては、大量の記憶領域を利用し、さらにその記憶領域のほとんどが利用される場合である。この場合、GCが発生する度に大量の記憶領域を走査しなければならない。この場合、malloc/freeで必要ない領域だけを開放する方法が速度が得られる。</p>
+      <p>このように、条件をそろえれば差は生じるが、双方とも実装の未熟さが原因にくるため、洗練された実装では差は生じないと考えることができる。</p>
 
 
-      <h3 id="hl.2.3">2.3.GC�Υ��르�ꥺ��</h3>
-      <p>GC�δ���Ū�ʥ��르�ꥺ����礭��ʬ������Ĥ�ʬ�����롣</p>
+      <h3 id="hl.2.3">2.3.GCのアルゴリズム</h3>
+      <p>GCの基本的なアルゴリズムは大きく分けて二つに分けられる。</p>
       <ul>
-	<li>���ȥ������(Reference counting)</li>
+	<li>参照カウント(Reference counting)</li>
 	<li>Tracing collectors</li>
       </ul>
 
 
-      <h4 id="hl.2.3.1">2.3.1.���ȥ������</h4>
-      <p>���ȥ������(Reference counting)�ϥ��֥������ȡ�ưŪ�˳��ݤ��������ΰ��ñ�̡ˤ����Ȥ���Ƥ�����򸵤��ΰ�γ�����Ԥ�GC�Ǥ��롣���ƤΥ��֥������Ȥ��Ф��ƻ��ȥ�����ȤȸƤФ�������ͤ��ղä��롣���ȥ�����Ȥϥץ���������Τˤ��Υ��֥������Ȥ�ؤ������ݥ��󥿤�������¸�ߤ��뤫��Ͽ�����Τǡ��ѿ��������ʤɤˤ�ä��Ѳ����롣�����ơ����λ��ȥ�����Ȥ�0�ˤʤä���硢�Ĥޤꡢ�ɤ�����⻲�Ȥ���ʤ��ʤä����ˤ��Υ��֥������Ȥ�������Ȥ�����ΤǤ��롣</p>
+      <h4 id="hl.2.3.1">2.3.1.参照カウント</h4>
+      <p>参照カウント(Reference counting)はオブジェクト（動的に確保したメモリ領域の単位）が参照されている数を元に領域の開放を行うGCである。全てのオブジェクトに対して参照カウントと呼ばれる整数値を付加する。参照カウントはプログラム全体にこのオブジェクトを指し示すポインタがいくつ存在するかを記録するもので、変数の代入などによって変化する。そして、この参照カウントが0になった場合、つまり、どこからも参照されなくなった場合にそのオブジェクトを開放するというものである。</p>
       <div class="figure">
-	<img src="./image/reference_counting.gif" alt="���ȥ������" />
-	<div class="caption">Figure 6. ���ȥ������</div>
+	<img src="./image/reference_counting.gif" alt="参照カウント" />
+	<div class="caption">Figure 6. 参照カウント</div>
       </div>
-      <p>���ȥ�����Ȥ������Ȥ��Ƥϰʲ��Τ��Ȥ��������롣</p>
+      <p>参照カウントの利点としては以下のことがあげられる。</p>
       <ul>
-	<li>��������®</li>
-	<li>��ư�δ�����Ʊ�ͤ˻��Ȥ���ʤ��ʤä�������¨�¤˥��֥������Ȥγ������Ԥ���</li>
-	<li>�����ΰ�����ʳ��ˤ����Ѥ��Ǥ���(File��mutex�ʤ�)</li>
+	<li>処理が高速</li>
+	<li>手動の管理と同様に参照されなくなった時点で即座にオブジェクトの開放が行われる</li>
+	<li>記憶領域管理以外にも利用ができる(File、mutexなど)</li>
       </ul>
-      <p>�դ˷����Ȥ��Ƥϡ�</p>
+      <p>逆に欠点としては、</p>
       <ul>
-	<li>�����ͤ��ղä��뤿���ΰ�Υ����С��إåɤ�������</li>
-	<li>���ȥ�����ȤΥ����С��ե������θ����ɬ�פ�����</li>
-	<li>�۴Ļ��Ȥ������ä����˲�����Ԥ��ʤ�(Figure 7.)</li>
+	<li>整数値を付加するため領域のオーバーヘッドが生じる</li>
+	<li>参照カウントのオーバーフローを考慮する必要がある</li>
+	<li>循環参照が起こった場合に回収が行われない(Figure 7.)</li>
       </ul>
-      <p class="no_indent">�ʤɤ������롣</p>
+      <p class="no_indent">などががある。</p>
       <div class="figure">
-	<img src="./image/reference_cycles.gif" alt="�۴Ļ��ȡʲ���ϹԤ��ʤ���" />
-	<div class="caption">Figure 7. �۴Ļ��ȡʲ���ϹԤ��ʤ���</div>
+	<img src="./image/reference_cycles.gif" alt="循環参照（回収は行えない）" />
+	<div class="caption">Figure 7. 循環参照（回収は行えない）</div>
       </div>
 
 
       <h4 id="hl.2.3.2">2.3.2.Tracing collectors</h4>
-      <p>Tracing collectors�ϼ��Τ褦���ʳ���ޤ�GC�ǡ�����Ū��GC�ȸƤФ�Ƥ���ΤϤ�����Υ��르�ꥺ��Ǥ��롣</p>
+      <p>Tracing collectorsは次のような段階を含むGCで、一般的にGCと呼ばれているのはこちらのアルゴリズムである。</p>
       <div class="figure">
 	<ol>
-	  <li>�����(�㡢�ޡ�����Ϥ���)</li>
-	  <li>�ȥ졼��(�㡢�ޡ����⤷���ϥ��ԡ�)</li>
-	  <li>���</li>
-	  <li>���ݤ����ΰ�κ�����</li>
+	  <li>初期化(例、マークをはずす)</li>
+	  <li>トレース(例、マークもしくはコピー)</li>
+	  <li>回収</li>
+	  <li>確保した領域の再利用</li>
 	</ol>
-	<div class="caption">���르�ꥺ�ࣱ Tracing collector</div>
+	<div class="caption">アルゴリズム１ Tracing collector</div>
       </div>
-      <p>Tracing collectors��̾���ΤȤ��ꥪ�֥������Ȥ˴ޤޤ��ݥ��󥿤�ȥ졼���������Ѥ��Ƥ��륪�֥������ȡ����Ƥ��ʤ����֥������Ȥ�Ƚ�̤��롣���ΤȤ����ȥ졼���ΤϤ���Ȥʤ륪�֥������Ȥ�롼��(Root)�ȸƤӡ���ã�Ǥ������֥������Ȥϥץ�����ब������Υ��֥������ȡ���ã�Ǥ��ʤ��ä����֥������ȤϤ��ߤȤߤʤ������Ԥ����������äơ����르�ꥺ��β���ʳ��Ǥϳ��ݤ������ƤΥ��֥������Ȥ˲��餫����ˡ�ǥ��������Ǥ���ɬ�פ����롣</p>
-      <p>�ȥ졼���Υ��르�ꥺ��ˤϥޡ�������ɥ�������(Mark and Sweep)�����ԡ�(Copying)�Ȥ�����Ĥ���ˡ��¸�ߤ��롣</p>
+      <p>Tracing collectorsは名前のとおりオブジェクトに含まれるポインタをトレースして利用しているオブジェクト、していないオブジェクトを判別する。このとき、トレースのはじめとなるオブジェクトをルート(Root)と呼び、到達できたオブジェクトはプログラムが利用中のオブジェクト、到達できなかったオブジェクトはごみとみなし回収を行う。したがって、アルゴリズムの回収段階では確保した全てのオブジェクトに何らかの方法でアクセスできる必要がある。</p>
+      <p>トレースのアルゴリズムにはマークアンドスイープ(Mark and Sweep)、コピー(Copying)という二つの方法が存在する。</p>
 
 
-      <h5 id="hl.2.3.2.1">2.3.2.1.�ޡ�������ɥ�������</h5>
-      <p>�ޡ�������ɥ������פϥȥ졼���ʳ��Ȳ���ʳ������Τ�ʬ���줿���르�ꥺ��Ǥ��롣</p>
-      <p>���르�ꥺ��1�Υȥ졼���ʳ��Ǥϥ롼�Ȥ�����ã�Ǥ��륪�֥������Ȥ˰���Ĥ��Ƥ�����</p>
+      <h5 id="hl.2.3.2.1">2.3.2.1.マークアンドスイープ</h5>
+      <p>マークアンドスイープはトレース段階と回収段階が明確に分かれたアルゴリズムである。</p>
+      <p>アルゴリズム1のトレース段階ではルートから到達できるオブジェクトに印をつけていく。</p>
       <div class="figure">
-	<img src="./image/mark_and_sweep_mark.gif" alt="�ޡ���" />
-	<div class="caption">Figure 8. �ޡ���</div>
+	<img src="./image/mark_and_sweep_mark.gif" alt="マーク" />
+	<div class="caption">Figure 8. マーク</div>
       </div>
-      <p>���르�ꥺ��1�β���ʳ��Ǥϡ����ƤΥ��֥������Ȥ�Ĵ�٥ޡ����ΤĤ��Ƥ��ʤ����֥������Ȥ������롣</p>
+      <p>アルゴリズム1の回収段階では、全てのオブジェクトを調べマークのついていないオブジェクトを回収する。</p>
       <div class="figure">
-	<img src="./image/mark_and_sweep_sweep.gif" alt="��������" />
-	<div class="caption">Figure 9. ��������</div>
+	<img src="./image/mark_and_sweep_sweep.gif" alt="スイープ" />
+	<div class="caption">Figure 9. スイープ</div>
       </div>
-      <p>�ޡ�������ɥ���������GC�������Ȥ��Ƥϰʲ��Τ��Ȥ��������롣</p>
+      <p>マークアンドスウィープGCの利点としては以下のことがあげられる。</p>
       <ul>
-	<li>�������ưפǤ���</li>
-	<li>���֥������Ȥ����ޤ�������ʤ����˥��ԡ�GC����٤���ǽ���褤</li>
-	<li>�۴Ļ��Ȥ������ä����֥������ȤǤ������Ԥ���</li>
+	<li>実装が容易である</li>
+	<li>オブジェクトがあまり回収されない場合にコピーGCと比べて性能がよい</li>
+	<li>循環参照が起こったオブジェクトでも回収が行える</li>
       </ul>
-      <p>�����Ȥ��Ƥϡ�</p>
+      <p>欠点としては、</p>
       <ul>
-	<li>ɬ�פʤ���ʬ��������Ԥ������ΰ�����Ҳ���������</li>
-	<li>�������뵭���ΰ���̤˱�������ǽ����������</li>
+	<li>必要ない部分から回収を行うため領域の断片化が生じる</li>
+	<li>管理する記憶領域の量に応じて性能が劣化する</li>
       </ul>
-      <p class="no_indent">�ʤɤ����롣</p>
-      <p>����ʸ�ǤϤ��Υޡ�������ɥ������פ������Ǥ����ݼ�Ū�ޡ�������ɥ������פ����Ѥ��Ƥ��롣�ݼ�Ū�ޡ�������ɥ������פˤĤ��ƤϽ����Ϥμ����ι�Ǻ��ټ��夲�롣</p>
+      <p class="no_indent">などがある。</p>
+      <p>本論文ではこのマークアンドスイープの派生である保守的マークアンドスイープを利用している。保守的マークアンドスイープについては処理系の実装の項で再度取り上げる。</p>
 
 
-      <h5 id="hl.2.3.2.2">2.3.2.2.���ԡ�</h5>
-      <p>���ԡ����ΰ��Ⱦʬ�ˤ���GC��Ԥ����르�ꥺ��Ǥ��롣</p>
-      <p>���르�ꥺ��1�Υȥ졼���ʳ��Ǥϥ롼�Ȥ�����ã�Ǥ��륪�֥������Ȥ򿷤����ΰ�˥��ԡ����Ƥ������ȥ졼��������ꡢ����������ƤΥ��֥������Ȥ򿷤����ΰ�˥��ԡ��Ǥ����顢�Ť��ΰ����Ƥ��˴�����(���르�ꥺ��1�β���ʳ�)��</p>
+      <h5 id="hl.2.3.2.2">2.3.2.2.コピー</h5>
+      <p>コピーは領域を半分にしてGCを行うアルゴリズムである。</p>
+      <p>アルゴリズム1のトレース段階ではルートから到達できるオブジェクトを新しい領域にコピーしていく。トレースが終わり、利用中の全てのオブジェクトを新しい領域にコピーできたら、古い領域全てを破棄する(アルゴリズム1の回収段階)。</p>
       <div class="figure">
-	<img src="./image/copying_before_copy.gif" alt="���ԡ���" />
-	<div class="caption">Figure 10. ���ԡ���</div>
+	<img src="./image/copying_before_copy.gif" alt="コピー前" />
+	<div class="caption">Figure 10. コピー前</div>
       </div>
       <div class="figure">
-	<img src="./image/copying_after_copy.gif" alt="���ԡ���" />
-	<div class="caption">Figure 11. ���ԡ���</div>
+	<img src="./image/copying_after_copy.gif" alt="コピー後" />
+	<div class="caption">Figure 11. コピー後</div>
       </div>
-      <p>���֥������Ȥ��ư�����뤿�ᡢ�ݥ��󥿤��դ��ؤ���Ԥ������ץ��������Ǥϥݥ��󥿤Ȥ��̤�ID���Ѥ���ɬ�פ����롣</p>
-      <p>���ԡ�GC�������Ȥ��Ƥϰʲ��Τ��Ȥ��������롣</p>
+      <p>オブジェクトを移動させるため、ポインタの付け替えを行うか、プログラム内ではポインタとは別のIDを用いる必要がある。</p>
+      <p>コピーGCの利点としては以下のことがあげられる。</p>
       <ul>
-	<li>����ʳ����ۤȤ�ɤʤ�����ޡ�������ɥ�������GC����ٹ�®</li>
-	<li>��֤�ͤ�ƥ��ԡ���Ԥ������ΰ�����Ҳ���ȯ�����ʤ�</li>
-	<li>�۴Ļ��Ȥ������ä����֥������ȤǤ������Ԥ���</li>
+	<li>回収段階がほとんどないためマークアンドスイープGCと比べ高速</li>
+	<li>隙間を詰めてコピーを行うため領域の断片化が発生しない</li>
+	<li>循環参照が起こったオブジェクトでも回収が行える</li>
       </ul>
-      <p>�����Ȥ��Ƥϡ�</p>
+      <p>欠点としては、</p>
 	<ul>
-	  <li>���ԡ���Ԥä����֥������ȤΥݥ��󥿤��դ��ؤ���ɬ��(Figure 11.)</li>
-	  <li>�ݥ��󥿰ʳ���ID���Ѥ��Ƥδ�����ɬ��</li>
-	  <li>���ߤȤʤ��ΰ褬��ü�˾��ʤ������ǽ����������</li>
+	  <li>コピーを行ったオブジェクトのポインタの付け替えが必要(Figure 11.)</li>
+	  <li>ポインタ以外のIDを用いての管理が必要</li>
+	  <li>ごみとなる領域が極端に少ない場合性能が劣化する</li>
 	</ul>
-      <p class="no_indent">�ʤɤ����롣</p>
+      <p class="no_indent">などがある。</p>
 
 
-      <h3 id="hl.2.4">2.4.���� vs �ݼ�Ū</h3>
-      <p>���Ѥ��Ƥ��륪�֥������Ȥ򤿤ɤ���ˡ�Ȥ��̤ˡ����Ѥ��Ƥ��륪�֥������Ȥ�Ƚ��ˡ�ˤĤ������Τ�GC(precise GC)���ݼ�ŪGC(conservative GC)�Ȥ������̤����롣</p>
-      <p>���Τ�GC�ϡ�������Υ��֥������Ȥ����Τ˵�ᡢ���Ѥ��Ƥ��ʤ����֥������Ȥ����Ʋ������GC�Ǥ��롣�̾�GC�Ȥ��������Τ�GC�򼨤���</p>
-      <p>�ݼ�ŪGC��������餷��ۣ��ʥ��֥������Ȥ��ݻ����Ʋ����Ԥ�ʤ�GC�Ǥ��롣����Ū�ˤϥ��֥������ȤΥ롼�Ȥ˴������륪�֥������Ȥ��ΰ�(�ҡ��פʤ�)�򤵤��ݥ��󥿤��˴ޤޤ줿���ˤϡ����Υݥ��󥿤��������֥������Ȥβ���ϹԤ�ʤ��ʤɤ����ˤ�Τ롣��̤Ȥ������襴�ߤǤ��륪�֥������Ȥ��ݻ����Ƥ��ޤ��������Υ��֥������Ȥ�̵���ʥݥ��󥿤򤵤����ȤϤʤ��ΤǼ㴳�Υ���꡼���������뤬��ñ��ʳ��˰����Ǥ��롣�̾�롼�Ȥϥ쥸�����������å�������ΰ衢�ҡ����ΰ�ʤɤ����뤬����������Ƥ�ۣ��Ȥ����ݼ�ŪGC��Ԥ������ä����ݼ�(fully conservative)��������ۣ��Ȥ��ƹԤ�����Ⱦ�ݼ�(partially conservative)�Ȥ�����</p>
-      <p>�ݼ�Ū�����ΤȤ����ͤ����ϵ����ΰ��ޡ����������ˤǤ��뤿�ᡢ����Ū�ʥ��르�ꥺ��ϵ��ꤷ�ʤ���</p>
-      <p>�ݼ�ŪGC�ϥޡ�������ɥ�������GC���Ȥ߹�碌�����Ѥ���뤳�Ȥ�¿�����ޤ�������GC�򥵥ݡ��Ȥ��ʤ�C�ʤɤθ���Ǥμ������ưפǤ��뤿�ᡢRuby�ʤɤθ�������ϤǤϤ����ݼ�Ū�ޡ�������ɥ�������GC�����Ѥ���Ƥ��롣</p>
+      <h3 id="hl.2.4">2.4.正確 vs 保守的</h3>
+      <p>利用しているオブジェクトをたどる方法とは別に、利用しているオブジェクトの判定法について正確なGC(precise GC)と保守的GC(conservative GC)という区別がある。</p>
+      <p>正確なGCは、利用中のオブジェクトを正確に求め、利用していないオブジェクトを全て回収するGCである。通常GCといえば正確なGCを示す。</p>
+      <p>保守的GCは利用中らしき曖昧なオブジェクトは保持して回収を行わないGCである。具体的にはオブジェクトのルートに管理するオブジェクトの領域(ヒープなど)をさすポインタがに含まれた場合には、そのポインタがさすオブジェクトの回収は行わないなどの方針を採る。結果として本来ゴミであるオブジェクトを保持してしまうが、このオブジェクトは無効なポインタをさすことはないので若干のメモリリークが生じるが、単純な割りに安全である。通常ルートはレジスタ、スタック、大域領域、ヒープ領域などがあるが、これら全てが曖昧として保守的GCを行う場合を特に全保守(fully conservative)、一部を曖昧として行う場合を半保守(partially conservative)という。</p>
+      <p>保守的と正確という考え方は記憶領域をマークする方針であるため、具体的なアルゴリズムは規定しない。</p>
+      <p>保守的GCはマークアンドスイープGCと組み合わせて利用されることが多い。また、本来GCをサポートしないCなどの言語での実装が容易であるため、Rubyなどの言語処理系ではこの保守的マークアンドスイープGCが利用されている。</p>
       
       
       <h2 id="hl.3">3.Lisp</h2>
-      <p>�ܸ���ǤϤ��ޤ��ޤ�GC�θ�Ψ��Ĵ�٤뤿��˥ץ�����ߥ󥰸�����ꡢGC��������롣�����ƥ٥���ޡ����ƥ��Ȥˤ�ä���Ӥ�Ԥ��������ǡ�GC����ǽ��ȿ�Ǥ���䤹���������䤵������¤����LISP������������</p>
-      <p>LISP(LISt Processing��ά)��1958ǯ�˥���󡦥ޥå��������ˤ�ä�ȯ�����줿�ץ�����ߥ󥰸���Ǥ��롣�����黻�η׻���ǥ���ξ��ɽ�����뤿��ε�ˡ��FORTRAN�ξ�˰ܿ����뤳�Ȥˤ����LISP���󥿥ץ꥿������������</p>
-      <p>����LISP��Common Lisp��Scheme�Ȥ�����Ĥ���������ή�Ǥ��뤬�������Ǥ�LISP���Ƥ����ƤϤޤ��������夲�롣</p>
+      <p>本研究ではさまざまなGCの効率を調べるためにプログラミング言語を作り、GCを実装する。そしてベンチマークテストによって比較を行う。そこで、GCの性能が反映されやすく実装がやさしい構造をもつLISP言語を選んだ。</p>
+      <p>LISP(LISt Processingの略)は1958年にジョン・マッカーシーによって発明されたプログラミング言語である。ラムダ演算の計算モデルを紙の上で表現するための記法をFORTRANの上に移植することにより初のLISPインタプリタが誕生した。</p>
+      <p>現在LISPはCommon LispとSchemeという二つの方言が主流であるが、ここではLISP全てに当てはまる話題を取り上げる。</p>
 
 
-      <h3 id="hl.3.1">3.1.��ħ�ȥץ���������</h3>
+      <h3 id="hl.3.1">3.1.特徴とプログラムの例</h3>
 
 
       <h4 id="hl.3.1.1">3.1.1.Atom</h4>
-      <p>LISP�ǰ����ǡ�������ǡ��ͤ��Τ�Τ򼨤��ǡ�����Atom�ȸƤ֡�Atom�ˤ�̾���򤢤�魯����ܥ�(Symbol)�������͡����ͤ�ɽ���������Τ�Ρ�ʸ���󡢴ؿ��򤢤�魯�ץ���������(Procedure)�ʤɤ��ޤޤ�롣</p>
-      <p>Atom��LISP�ץ�������ľ�ܥ�ƥ��Ȥ��Ƶ��ҤǤ�����(���͡�ʸ������)�䡢LISP�μ���¹Ԥ�����̤Ȥ����������Ρʥ���ܥ롢�ץ���������ˡ�����¾LISP�����Ϥγ�ĥ���Ѱդ��줿�ǡ�����¤�ʤɤ��ޤޤ�롣</p>
+      <p>LISPで扱うデータの中で、値そのものを示すデータをAtomと呼ぶ。Atomには名前をあらわすシンボル(Symbol)、真偽値、数値を表す数字そのもの、文字列、関数をあらわすプロシージャ(Procedure)などが含まれる。</p>
+      <p>AtomはLISPプログラムに直接リテラルとして記述できるもの(数値、文字列等)や、LISPの式を実行した結果として得られるもの（シンボル、プロシージャ）、その他LISP処理系の拡張で用意されたデータ構造などが含まれる。</p>
       <div class="figure">
 	<table summary="Atom">
 	  <tbody>
 	    <tr>
-	      <th>��ƥ��⤷���ϼ�</th>
-	      <th>�¹Ԥ������</th>
-	      <th>Atom�μ���</th>
+	      <th>リテラルもしくは式</th>
+	      <th>実行した結果</th>
+	      <th>Atomの種類</th>
 	    </tr>
 	    <tr>
 	      <td>10</td>
 	      <td>10</td>
-	      <td>����</td>
+	      <td>数値</td>
 	    </tr>
 	    <tr>
 	      <td>"the string"</td>
 	      <td>"the string"</td>
-	      <td>ʸ����</td>
+	      <td>文字列</td>
 	    </tr>
 	    <tr>
 	      <td>'symbol</td>
 	      <td>symbol</td>
-	      <td>����ܥ�</td>
+	      <td>シンボル</td>
 	    </tr>
 	    <tr>
 	      <td>(quote symbol)</td>
 	      <td>symbol</td>
-	      <td>����ܥ�</td>
+	      <td>シンボル</td>
 	    </tr>
 	    <tr>
 	      <td>(lambda (x) x)</td>
-	      <td>procedure(���餫������ɽ��)</td>
-	      <td>�ץ���������</td>
+	      <td>procedure(何らかの内部表現)</td>
+	      <td>プロシージャ</td>
 	    </tr>
 	  </tbody>
 	</table>
-	<div class="caption">Figure 12. Atom�ε���</div>
+	<div class="caption">Figure 12. Atomの記述</div>
       </div>
 
 
       <h4 id="hl.3.1.2">3.1.2.Cons Cell</h4>
-      <p>LISP�ˤϤ⤦�ҤȤ�Cons Cell(�⤷����Pair)�ȸƤ֥ǡ�����¸�ߤ��롣Cons Cell����ĤΥǡ�����ޤȤ��ǡ����Ǥ��롣Cons Cell����Ƭ��Car�ʥ����ˡ��Ǹ��Cdr(������)�ȸƤ֡�Car��Cdr��Atom�� Cons Cell�ɤ���Υǡ����⼨�����Ȥ��Ǥ��롣</p>
+      <p>LISPにはもうひとつCons Cell(もしくはPair)と呼ぶデータが存在する。Cons Cellは二つのデータをまとめるデータである。Cons Cellの先頭をCar（カー）、最後をCdr(クダー)と呼ぶ。Car、CdrはAtom、 Cons Cellどちらのデータも示すことができる。</p>
       <div class="figure">
 	<img src="./image/cons_cell.gif" alt="Cons Cell" />
 	<div class="caption">Figure 13. Cons Cell</div>
       </div>
-      <p>A��B��Cons�ʤ⤷����Pair�ˤȸ��ä���硢Car��A��Cdr��B�򼨤�Cons Cell�Τ��Ȥ������Cons Cell��������뤳�Ȥ�cons����ȸ�����</p>
+      <p>AとBのCons（もしくはPair）と言った場合、CarがAを、CdrがBを示すCons Cellのことを言う。Cons Cellを作成することをconsすると言う。</p>
 
 
-      <h4 id="hl.3.1.3">3.1.3.S��</h4>
-      <p>LISP�ϥץ������ε���ˡ��S��(Symbol-Expression)�ȸƤФ�뵭����������Ѥ��Ƥ��롣S���ϼ��Τ褦���������롣</p>
+      <h4 id="hl.3.1.3">3.1.3.S式</h4>
+      <p>LISPはプログラムの記述法にS式(Symbol-Expression)と呼ばれる記述方式を採用している。S式は次のように定義される。</p>
       <div class="figure">
-	<pre>S�� ::= Atom
-S�� ::= S����S����Cons</pre>
-	<div class="caption">Figure 14. S�������</div>
+	<pre>S式 ::= Atom
+S式 ::= S式とS式のCons</pre>
+	<div class="caption">Figure 14. S式の定義</div>
       </div>
-      <p>S����Atom��ޤबcons����Ƥ����Τ�Atom�ǤϤʤ���S���򵭽Ҥ����硢��ƥ��ɽ���Ǥ���Atom�Ϥ��Τޤ޵��Ҥ���Cons Cell�ϥɥå���(A . B)�Τ褦��ɽ�����롣A��Car��B��Cdr�ˤ����롣</p>
+      <p>S式はAtomを含むがconsされているものはAtomではない。S式を記述する場合、リテラル表記できるAtomはそのまま記述し、Cons Cellはドット対(A . B)のように表記する。AがCar、BがCdrにあたる。</p>
       <div class="figure">
-	<img src="./image/simple_s_expression_structure.gif" alt="ñ���S���ι�¤" />
-	<div class="caption">Figure 15. ñ���S���ι�¤</div>
+	<img src="./image/simple_s_expression_structure.gif" alt="単純なS式の構造" />
+	<div class="caption">Figure 15. 単純なS式の構造</div>
       </div>
-      <p>LISP�Ǥ�Cons Cell��ɥå��Ф�ɽ������S�����⼡�Τ褦��Ϣ³����". ("���б�����")"���ά�����ꥹ��ɽ���������Ѥ��롣�ꥹ��ɽ�����줿S���Τ�����(&lt;S��&gt; ... &lt;S�� n&gt;)�Ȥ������ˤʤäƤ����Τ�ꥹ�ȤȸƤӡ��ꥹ�ȤκǸ夬�ɥå��ФˤʤäƤ����Τ�ɥåȥꥹ�ȤȸƤ֡�</p>
+      <p>LISPではCons Cellをドット対で表現したS式よりも次のように連続する". ("と対応する")"を省略したリスト表記を主に利用する。リスト表記されたS式のうち、(&lt;S式&gt; ... &lt;S式 n&gt;)という形になっているものをリストと呼び、リストの最後がドット対になっているものをドットリストと呼ぶ。</p>
       <div class="figure">
 	<table summary="list">
 	  <tbody>
 	    <tr>
-	      <th>S��</th>
-	      <th>�ꥹ��ɽ��</th>
-	      <th>����</th>
+	      <th>S式</th>
+	      <th>リスト表記</th>
+	      <th>種類</th>
 	    </tr>
 	    <tr>
 	      <td>(a . b)</td>
 	      <td>(a . b)</td>
-	      <td>�ɥåȥꥹ��</td>
+	      <td>ドットリスト</td>
 	    </tr>
 	    <tr>
 	      <td>(a . (b . c))</td>
 	      <td>(a b .c)</td>
-	      <td>�ɥåȥꥹ��</td>
+	      <td>ドットリスト</td>
 	    </tr>
 	    <tr>
 	      <td>(a . (b . ()))</td>
 	      <td>(a b)</td>
-	      <td>�ꥹ��</td>
+	      <td>リスト</td>
 	    </tr>
 	    <tr>
 	      <td>((a . b) . (c . (d . e)))</td>
 	      <td>((a . b) c d . e)</td>
-	      <td>�ɥåȥꥹ��</td>
+	      <td>ドットリスト</td>
 	    </tr>
 	    <tr>
 	      <td>((a . b) . (c . (d . ())))</td>
 	      <td>((a . b) c d)</td>
-	      <td>�ꥹ��</td>
+	      <td>リスト</td>
 	    </tr>
 	    <tr>
 	      <td>((a . (b . ())) . (c . (d . ())))</td>
 	      <td>((a b) c d)</td>
-	      <td>�ꥹ��</td>
+	      <td>リスト</td>
 	    </tr>
 	  </tbody>
 	</table>
-	<div class="caption">Figure 16.  S�����б�����ꥹ��ɽ��</div>
+	<div class="caption">Figure 16.  S式と対応するリスト表記</div>
       </div>
-      <p>���̤���Ȥ��Ƥϡ�����ʤ��ꥹ�Ȥ�nil��Common Lisp�Ǥ�ɽ�����˥�ˤ�()��Scheme�Ǥ�ɽ�������ꥹ�ȡˤʤɤ�ɽ����nil��()��Atom�Ǥ⤢�롣</p>
+      <p>特別な例としては、何もないリストをnil（Common Lispでの表現。ニル）や()（Schemeでの表現。空リスト）などで表す。nilや()はAtomでもある。</p>
 
 
-      <h4 id="hl.3.1.4">3.1.4.�ץ������</h4>
-      <p>LISP�Ǥ�S���ʥꥹ�Ȥ�Atom�ˤ򼰤Ȥ���ɾ��(Eval)���Ƥ�����ɾ���Ȥϼ������ͤ���뤳�Ȥ������LISP�Ǥϼ��μ���˱����Ƽ��Τ褦��ɾ����Ԥ���</p>
+      <h4 id="hl.3.1.4">3.1.4.プログラム</h4>
+      <p>LISPではS式（リストやAtom）を式として評価(Eval)していく。評価とは式から値を求めることを言う。LISPでは式の種類に応じて次のように評価を行う。</p>
       <div class="figure">
 	<table summary="eval">
 	  <tbody>
 	    <tr>
-	      <th>���μ���</th>
-	      <th>ɾ������ˡ</th>
+	      <th>式の種類</th>
+	      <th>評価の方法</th>
 	    </tr>
 	    <tr>
-	      <td>�ꥹ��</td>
-	      <td>(&lt;�ؿ�&gt; &lt;����&gt; ... &lt;����&gt;)�Τ褦�ʴؿ��ƤӽФ��Ȥߤʤ���ɾ�����롣</td>
+	      <td>リスト</td>
+	      <td>(&lt;関数&gt; &lt;引数&gt; ... &lt;引数&gt;)のような関数呼び出しとみなして評価する。</td>
 	    </tr>
 	    <tr>
-	      <td>����ܥ�</td>
-	      <td>����ܥ���б��դ���줿�ͤ���Ф���</td>
+	      <td>シンボル</td>
+	      <td>シンボルに対応付けられた値を取り出す。</td>
 	    </tr>
 	    <tr>
-	      <td>����ܥ�ʳ���Atom</td>
-	      <td>Atom���Ȥ��֤���</td>
+	      <td>シンボル以外のAtom</td>
+	      <td>Atom自身を返す。</td>
 	    </tr>
 	  </tbody>
 	</table>
-	<div class="caption">Figure 17. LISP�μ���ɾ��ˡ</div>
+	<div class="caption">Figure 17. LISPの式の評価法</div>
       </div>
-      <p>�ؿ��ˤϰ��������Ƥ�ɾ�����ʤ��ü����(special form, macro)�Ȱ���������ɾ������ץ��������������ब¸�ߤ��롣�ؿ��˰������Ϥ����ͤ���뤳�Ȥ������ؿ���Ŭ��(apply)���롢�⤷����ñ��Ŭ������ȸ�����</p>
+      <p>関数には引数を全ては評価しない特殊形式(special form, macro)と引数を全て評価するプロシージャの二種類が存在する。関数に引数を渡して値を求めることを引数を関数に適応(apply)する、もしくは単に適応すると言う。</p>
 
 
-      <h5 id="hl.3.1.4.1">3.1.4.1.�ü����</h5>
-      <p>��ɽŪ���ü�����ˤ�quote��set!��cond��lambda�ʤɤ�¸�ߤ��롣��ʸ(syntax)�Ȥ�ƤФ�롣</p>
+      <h5 id="hl.3.1.4.1">3.1.4.1.特殊形式</h5>
+      <p>代表的な特殊形式にはquote、set!、cond、lambdaなどが存在する。構文(syntax)とも呼ばれる。</p>
 
 
       <h6 id="hl.3.1.4.1.1">3.1.4.1.1.quote</h6>
-      <p>quote������ɾ�������ˤ��Τޤ��֤��ü�����Ǥ��롣�������ĤȤ롣�ꥹ�Ȥ�ǡ�����¤�Ȥ��ư���������硢����ܥ뼫�Τ���Ф��������ʤɤ����Ѥ��롣'(��������)�����Ѥ�����ά��ˡ�򥵥ݡ��Ȥ���LISP�����Ϥ�¿����</p>
+      <p>quote引数を評価せずにそのまま返す特殊形式である。引数を一つとる。リストをデータ構造として扱いたい場合、シンボル自体を取り出したい場合などに利用する。'(クオート)を利用した省略記法をサポートするLISP処理系も多い。</p>
       <div class="figure">
 	<pre><code>(quote 10) ; =&gt;10
 (quote a) ; =&gt; a
 (quote (this is the list)) :=&gt; (this is the list)
 'symbol ; =&gt; symbol
 '(another list) ; =&gt; (another list)</code></pre>
-	<div class="caption">Figure 18. quote��ư��</div>
+	<div class="caption">Figure 18. quoteの動作</div>
       </div>
 
 
       <h6 id="hl.3.1.4.1.2">3.1.4.1.2.set!</h6>
-      <p>set!�ϥ���ܥ���ͤ��б��դ����ü�����Ǥ��롣�������Ȥ롣�������ϥ���ܥ��Ȥꡢ���������ɾ�������ͤ��������Υ���ܥ���б��դ��롣�ʤ�LISP�Ǥ��ͤ򥷥�ܥ���б��դ��뤳�Ȥ�«������Ȥ�����</p>
+      <p>set!はシンボルに値を対応付ける特殊形式である。二引数をとる。第一引数はシンボルをとり、第二引数の評価した値を第一引数のシンボルに対応付ける。なおLISPでは値をシンボルに対応付けることを束縛するという。</p>
       <div class="figure">
 	<pre><code>(set! a 10) 
 a ; =&gt; 10
 (set! b '(the list))
 b ;=&gt; (the list)</code></pre>
-	<div class="caption">Figure 19. set!��ư��</div>
+	<div class="caption">Figure 19. set!の動作</div>
       </div>
 
 
       <h6 id="hl.3.1.4.1.3">3.1.4.1.3.cond</h6>
-      <p>cond��ʬ����ɽ���ü�����Ǥ��롣ʣ���ΰ�����Ȥꡢ�����ι�¤�ϼ��Τ褦�ˤʤäƤ���ɬ�פ����롣</p>
+      <p>condは分岐を表す特殊形式である。複数の引数をとり、引数の構造は次のようになっている必要がある。</p>
       <div class="figure">
 	<pre><code>(cond &lt;condition clause1&gt; &lt;condition clause&gt; ...)
 &lt;condition clause n&gt; := (&lt;condition&gt; &lt;expression&gt; ...)</code></pre>
-	<div class="caption">Figure 20. cond�ΰ����ι�¤</div>
+	<div class="caption">Figure 20. condの引数の構造</div>
       </div>
-      <p>cond�Ǥ�&lt;condition clause&gt;����֤�ɾ�����Ƥ�����&lt;condition clause&gt;�Τ�����&lt;condition&gt;��ɾ�����ƿ��򼨤��ͤǤ����³��&lt;expression&gt;����֤�ɾ������&lt;condition&gt;�����򼨤��ͤǤ����³��&lt;expression&gt;��ɾ�������˼���&lt;condition clause&gt;��ɾ�����롣</p>
-      <p>�Ǹ��&lt;condition clause&gt;��&lt;test&gt;��else�ʤɤ����̤ʥ���ܥ뤬�Ȥ�����������Ƥ��ꡢ���ξ���̵����³��&lt;expression&gt;��ɾ������롣</p>
+      <p>condでは&lt;condition clause&gt;を順番に評価していく。&lt;condition clause&gt;のうち、&lt;condition&gt;を評価して真を示す値であれば続く&lt;expression&gt;を順番に評価し、&lt;condition&gt;が偽を示す値であれば続く&lt;expression&gt;を評価せずに次の&lt;condition clause&gt;を評価する。</p>
+      <p>最後の&lt;condition clause&gt;の&lt;test&gt;はelseなどの特別なシンボルが使われる場合も許されており、その場合は無条件で続く&lt;expression&gt;が評価される。</p>
       <div class="figure">
 	<pre><code>(set! a 10)
 (cond ((&lt;= 1 a) 1)
@@ -656,83 +656,83 @@ b ;=&gt; (the list)</code></pre>
 (cond ((&lt;= 1 b) 1)
       ((= 0 b) 0)
       (else    -1)) ; =&gt; -1</code></pre>
-	<div class="caption">Figure 21. cond��ư��</div>
+	<div class="caption">Figure 21. condの動作</div>
       </div>
 
 
       <h6 id="hl.3.1.4.1.4">3.1.4.1.4.lambda</h6>
-      <p>lambda�ϥץ�������������ü�����Ǥ��롣�������ˤϥץ���������ΰ����Υꥹ�Ȥ���������ʹߤˤϥץ������������Ȥ򵭽Ҥ��롣�ץ����������ƤӽФ������ϡ���ȤΤ������ֺǸ��ɾ�����������ͤ��֤���lambda���Ȥ������</p>
+      <p>lambdaはプロシージャを作る特殊形式である。第一引数にはプロシージャの引数のリストを、第二引数以降にはプロシージャの中身を記述する。プロシージャを呼び出した場合は、中身のうち一番最後に評価した式の値を返す。lambda式とも言う。</p>
       <div class="figure">
 	<pre><code>(lambda (x) x) ; =&gt; procedure
 (set! identity (lambda (x) x))
 (identity 10) ; =&gt; 10
 ((lambda (x y) (+ x y)) 10 20) ; =&gt; 30
 ((lambda (x y) x (+ x y) y) 10 20) ; =&gt; 20</code></pre>
-	<div class="caption">Figure 22. lambda��ư��</div>
+	<div class="caption">Figure 22. lambdaの動作</div>
       </div>
 
 
-      <h6 id="hl.3.1.4.1.5">3.1.4.1.5.�ץ���������</h6>
-      <p>�ץ�����������ü�����Ȥϰۤʤ������ɾ����ԤäƤ���ؿ����ͤ����ؿ��Τ��ȤǤ��롣�ץ���������ˤ��礭��ʬ����Cons Cell���������cons����§�黻��+��*����Ӵؿ�&lt;�Ȥ��ä���������Ϥ��Ȥ߹��ޤ�Ƥ����Ȥ߹��ߥץ���������ȡ��ץ�����ޤ�lambda���Ǻ�����������ץ������������Ĥμ��ब¸�ߤ��롣</p>
-      <p>�ץ���������Ǥ����Ƥΰ�����ɾ�����Ƥ���ؿ���ɾ����Ԥ����ᡢ�ü�����Ȱۤʤ깽ʸ�ǤϤʤ���LISP�ˤ��ü�����ȥץ���������������δؿ�����¸�ߤ��ʤ��Ȥ⤤���롣</p>
+      <h6 id="hl.3.1.4.1.5">3.1.4.1.5.プロシージャ</h6>
+      <p>プロシージャは特殊形式とは異なり引数の評価を行ってから関数の値を求める関数のことである。プロシージャには大きく分けてCons Cellを作成するcons、四則演算の+や*、比較関数&lt;といった言語処理系に組み込まれている組み込みプロシージャと、プログラマがlambda式で作成した自作プロシージャの二つの種類が存在する。</p>
+      <p>プロシージャでは全ての引数を評価してから関数の評価を行うため、特殊形式と異なり構文ではない。LISPには特殊形式とプロシージャの二種類の関数しか存在しないともいえる。</p>
       <div class="figure">
 	<pre><code>(set! a 10)
 (cons 'a 'b) ; =&gt; (a . b)
 (cons a (cons 'b nil)) ; =&gt; (10 b)
 (* a 4) ; =&gt; 40
-(&lt; a 2) ; =&gt; ����ɽ����(nil��#f�ʤ�)
+(&lt; a 2) ; =&gt; 偽を表す値(nil、#fなど)
 (+ a (* 3 4)) ; =&gt; 22
 (set! add-1 ((lambda (x) (lambda (y) (+ x y))) 1))
 (add-1 10) ; =&gt; 11</code></pre>
-	<div class="caption">Figure 23. �ץ������������</div>
+	<div class="caption">Figure 23. プロシージャの例</div>
       </div>
 
 
-      <h4 id="hl.3.1.5">3.1.5.�Ķ�</h4>
-      <p>LISP�Ǥ�C����ʤɤǸ����������פ�Ķ��ȸƤӡ��ޤ����ֳ�¦�δĶ���ȥåץ�٥�(Top-Level)�ȸƤ֡�LISP�Ǥ�lambda�Ǻ�������ץ���������Τߤ��������Ķ���������롣</p>
-      <p>�ץ���������Ϻ������줿�Ȥ��δĶ���������ץ��������㤬���Ĳ������ȡ��°�����«����������Ĥޤ�ɾ��������˺������줿�Ȥ��δĶ����ĥ������ǿ������Ķ���������롣</p>
+      <h4 id="hl.3.1.5">3.1.5.環境</h4>
+      <p>LISPではC言語などで言うスコープを環境と呼び、また一番外側の環境をトップレベル(Top-Level)と呼ぶ。LISPではlambdaで作成するプロシージャのみが新しい環境を作成する。</p>
+      <p>プロシージャは作成されたときの環境を持ち、プロシージャが持つ仮引数と、実引数を束縛する時、つまり評価する時に作成されたときの環境を拡張する形で新しい環境を作成する。</p>
       <div class="figure">
-	<img src="./image/environment_is_made_by_lambda.gif" alt="lambda�������Ф��������Ķ����Ȥ��Ķ���ɽ����" />
-	<div class="caption">Figure 23. lambda�������Ф��������Ķ����Ȥ��Ķ���ɽ����</div>
+	<img src="./image/environment_is_made_by_lambda.gif" alt="lambda式が作り出す新しい環境（枠が環境を表す）" />
+	<div class="caption">Figure 23. lambda式が作り出す新しい環境（枠が環境を表す）</div>
       </div>
-      <p>���ߤ�LISP�Ǥϥ����ƥ��å��������פ����Ѥ���Ƥ��뤬�������ƥ��å��������פ�������줿���δĶ���ץ��������㤬��¸���뤳�Ȥˤ��¸����Ƥ��롣Figure 23��x��y�ʤɡ��ȥåץ�٥�ʳ����������Ƥ���lambda�β������ȤʤäƤ����ѿ���쥭�������ѿ��ȸƤ֡�</p>
-      <p>�쥭�������ѿ�x��(lambda (y) (+ x y))����������ץ��������㤬�˴������ޤǥץ�������������Ⱦ�ʵ�Ū�����ѤǤ��뤬�����Τ褦�˥쥭�������ѿ������Ѥ��Ƥ���ץ�����������ä˥���������ȸƤ֡�</p>
+      <p>現在のLISPではスタティックスコープが採用されているが、スタティックスコープは定義された時の環境をプロシージャが保存することにより実現している。Figure 23のxやyなど、トップレベル以外に定義されているlambdaの仮引数となっている変数をレキシカル変数と呼ぶ。</p>
+      <p>レキシカル変数xは(lambda (y) (+ x y))が作成するプロシージャが破棄されるまでプロシージャの中で半永久的に利用できるが、このようにレキシカル変数を利用しているプロシージャを特にクロージャと呼ぶ。</p>
 
 
-      <h3 id="hl.3.2">3.2.LISP��GC</h3>
-      <p>GC��LISP��Ʊ�����������������Ǥ��롣LISP�Ǥϥץ��������ɤ߹��ߡ��ꥹ�Ȥ�����������Υꥹ�Ȥ�ɾ�����ƥץ�������¹Ԥ��롣ɾ��������Υꥹ�Ȥ䡢ɾ�������Ѥ�������ΰ�Ϥ��ߤȤʤ뤬��LISP�Ǥϥץ�����ޤ�����Ū�˥������ݡ�����������ˡ���Ѱդ���Ƥ��ʤ����ᤳ���Τ��ߤϤ�����Ϸ׻����λ񸻤򿩤��Ĥ����Ƥ��ޤ��������������Υꥹ�Ȥ�������Cons Cell��Atom�Ϥ��ߤȤʤäƤ�����Ѥ���ǽ�Ǥ���ΤǺ����Ѥ�Ԥ���</p>
-      <p>LISP�ʳ��Υ��󥿥ץ꥿�θ�������Ϥ�Ʊ�ͤ˥ץ��������ɤ߹��ߡ��¹Ԥ���ݤ˸�����ͭ�Υǡ�����¤(ʸ���󡢥ե�����ݥ��󥿡���ʸ�ڤʤ�)��������롣�����ǹ�ʸ�ڤȤ�Ϳ����줿�ץ��������᤹�뤿��˥��󥿥ץ꥿������ΰ�˺��ǡ�����¤�Ǥ��롣̾�����ѿ������󡢴ؿ������ȶ��̤����ꡢ���ä���̵���Ƥ�黻�Ҥ�ͥ���̤����򤷤ƿ����β�ᤷ���ꤹ�롣</p>
-      <p>��ʸ�ڤ�LISP�Ϥ��Ǥ˼������褦�ˤ��ä����ڹ�¤�Τߤǹ�ʸ�����ꤵ��뤿�ᡢ¿����Ȱ㤤��ʸ���Ϥ��ä�ɽ���������ꥹ�ȹ�¤���Ѵ���������Ǥ��롢�Ĥޤ깽ʸ�ڤϥꥹ�Ȥˡ���ʸ�ڤ�������ǡ�����¤��Cons Cell�����Ǥ�Atom���������롣LISP��Ʊ�ͤ˥��󥿥ץ꥿�θ�������Ϥ����Ѥ�����ˤϹ�ʸ�ڤ��������ɬ�פ����롣���δ����ˤ��Ф���GC�����Ѥ���롣</p>
-      <p>�ꥹ�ȡ���ʸ�ڤϥץ�����ޤ�ľ�ܴ�����Ԥ����Ȥ��ǽ�ʾ�礬���롣�����������ξ��ϸ�������Ϥ������˼��ä��뤳�Ȥˤʤ��������Ϥ򤷤�����٤���夵������Ū��ȿ���Ƥ��ޤ���</p>
-      <p>���Τ褦�ˡ�����٤ι⤤���󥿥ץ꥿�θ�������Ϥ����Ѥ�������٤ι⤤�ץ����������������ˤ�GC��ɬ�ܤε�ǽ�ȤʤäƤ��롣</p>
+      <h3 id="hl.3.2">3.2.LISPとGC</h3>
+      <p>GCはLISPと同時に誕生した機構である。LISPではプログラムを読み込み、リストを作成し、そのリストを評価してプログラムを実行する。評価した後のリストや、評価で利用した一時領域はごみとなるが、LISPではプログラマが明示的にメモリを確保、開放する方法は用意されていないためこれらのごみはいずれは計算機の資源を食いつくしてしまう。しかし、このリストを構成するCons CellやAtomはごみとなっても再利用が可能であるので再利用を行う。</p>
+      <p>LISP以外のインタプリタの言語処理系も同様にプログラムを読み込み、実行する際に言語特有のデータ構造(文字列、ファイルポインタ、構文木など)を作成する。ここで構文木とは与えられたプログラムを解釈するためにインタプリタが一時領域に作るデータ構造である。名前を変数、配列、関数、型と区別したり、かっこが無くても演算子の優先順位を理解して数式の解釈したりする。</p>
+      <p>構文木はLISPはすでに示したようにかっこの木構造のみで構文が規定されるため、多言語と違い構文解釈はかっこ表示を内部リスト構造に変換するだけである、つまり構文木はリストに、構文木を構成するデータ構造がCons Cell、要素がAtomに相当する。LISPと同様にインタプリタの言語処理系を利用する場合には構文木を管理する必要がある。この管理にしばしばGCが利用される。</p>
+      <p>リスト、構文木はプログラマが直接管理を行うことも可能な場合がある。しかし、その場合は言語処理系の内部に手を加えることになり言語処理系をして抽象度を向上させる目的と反してしまう。</p>
+      <p>このように、抽象度の高いインタプリタの言語処理系を利用して抽象度の高いプログラムを作成する場合にはGCは必須の機能となっている。</p>
 
 
-      <h2 id="hl.4">4.GC��°LISP������</h2>
-      <p>����ʸ�Ǥ�GC��°��LISP�����Ϥκ������롣LISP�����Ϥλ��ͤ�Scheme�Υ��֥��åȤȤ��롣�����Ϥι�¤�ˤϸ�ŵŪ��S���Υ��󥿥ץ꥿�ʲ��ϡˡ�GC�Υ��르�ꥺ��ˤ��ݼ�ŪMark and Sweep����Ѥ��롣</p>
+      <h2 id="hl.4">4.GC付属LISP処理系</h2>
+      <p>本論文ではGC付属のLISP処理系の作成する。LISP処理系の仕様はSchemeのサブセットとする。処理系の構造には古典的なS式のインタプリタ（解釈系）、GCのアルゴリズムには保守的Mark and Sweepを採用する。</p>
 
 
-      <h3 id="hl.4.1">4.1.LISP�����Ϥι�¤</h3>
-      <p>��ŵŪ��S���Υ��󥿥ץ꥿�Ȥ��Ƥ�LISP�����Ϥ����������˴ΤȤʤ뵡ǽ��read-eval-print-loop(repl��ά��)��GC�Ǥ��롣����repl�Ϥ���̾�ΤȤ��ꡢ���Ϥ��ɤ߼�ꡢɾ��(evalute)�������Ϥ��뤳�Ȥ򷫤��֤������Ǥ��롣</p>
-      <p>read��Ԥ�reader��ʸ����Ȥ��Ƥ�S�����ɤ߼�ꡢLISP�����Ϥ�����ɽ���Ȥ��Ƥ�S��(�ꥹ��)���Ȥ�Ω�Ƥ롣eval��reader�����Ф����ꥹ�Ȥ��ᤷ�ץ�������¹Ԥ��롣print�ϼ¹Է�̤��ܤ˸�������ǽ��Ϥ��롣</p>
+      <h3 id="hl.4.1">4.1.LISP処理系の構造</h3>
+      <p>古典的なS式のインタプリタとしてのLISP処理系を作成する場合に肝となる機能はread-eval-print-loop(replと略す)とGCである。このreplはその名のとおり、入力を読み取り、評価(evalute)し、出力することを繰り返す機構である。</p>
+      <p>readを行うreaderは文字列としてのS式を読み取り、LISP処理系の内部表現としてのS式(リスト)を組み立てる。evalはreaderが作り出したリストを解釈しプログラムを実行する。printは実行結果を目に見える形で出力する。</p>
       <div class="figure">
 	<img src="./image/read_eval_print_loop.gif" alt="read-eval-print-loop" />
 	<div class="caption">Figure 24. read-eval-print-loop</div>
       </div>
       
 
-      <h3 id="hl.4.2">4.2.��������</h3>
-      <p>�ܸ���Ǥ�GC��������뤳�Ȥ⤢�ꡢ���餫����GC����ܤ��줿�ץ�����ߥ󥰸���ǤϤʤ�C����ˤ�äƺ�����Ԥä���C++�������Ѥ��ʤ��ä���ͳ�ϡ��ݼ�ŪGC�ȥ��󥹥��󥹤Υե����ʥ饤���ζ�Ĵ��Ԥ����Ȥˤ�ꡢ�ܼ��Ǥʤ���ʬ�����դ򤽤�����Ƥ��ޤ��Τ��ɤ�����Ǥ��롣</p>
+      <h3 id="hl.4.2">4.2.作成言語</h3>
+      <p>本研究ではGCを実装することもあり、あらかじめGCが搭載されたプログラミング言語ではなくC言語によって作成を行った。C++言語を採用しなかった理由は、保守的GCとインスタンスのファイナライザの協調を行うことにより、本質でない部分に注意をそそがれてしまうのを防ぐためである。</p>
 
 
-      <h3 id="hl.4.3">4.3.����</h3>
-      <p>�ܸ���Ǻ�������LISP������(�ʲ�������)�β����Ԥ���</p>
+      <h3 id="hl.4.3">4.3.作成</h3>
+      <p>本研究で作成したLISP処理系(以下処理系)の解説を行う。</p>
 
 
-      <h4 id="hl.4.3.1">4.3.1.�ǡ�����¤</h4>
-      <p>�����������������Τ����Ѥ���ǡ�����¤��scheme.h��������Ƥ��롣��ŵŪ��LISP�����ϤǤ�Cell�ȸƤФ��ʣ���Υǡ�����¤��union�ǤޤȤ᤿���ФȤ���union���̤�����Ф���ĥǡ�����¤�����Ѥ���Τ���ή�Ǥ��롣</p>
-      <p>Cell�����union�ǤޤȤ᤿���ФΥǡ�����¤�ˤ�S���ι�ǽҤ٤�cons(Cell�Υݥ��󥿤���Ļ��ĥǡ�����¤)��atom��ޤࡣ���������������Ϥ�atom��symbol��integer�� primitive��closure��macro�Ǥ��롣</p>
-      <p>Cell��LISP�����Ϥ����Ѥ���ǡ�����¤��ͤ������ͳ�ˤϡ�Cell�Ȥ����ҤȤĤΥǡ�����¤�ǽ����Ϥ����Ѥ���S��������ɽ���Ǥ��뤳�Ȥ�¾�ˡ��ǡ����Υ����������ˤ���GC�ǤΥ����ΰ�����Ҳ����ɤ���̣��ޤޤ�Ƥ롣</p>
-      <p>�������������ϤǤ�Cell��SCM�Ȥ���̾����typedef���Ƥ���</p>
+      <h4 id="hl.4.3.1">4.3.1.データ構造</h4>
+      <p>作成した処理系全体で利用するデータ構造はscheme.hで定義している。古典的なLISP処理系ではCellと呼ばれる複数のデータ構造をunionでまとめたメンバとそのunionを識別するメンバを持つデータ構造を利用するのが主流である。</p>
+      <p>Cellがもつunionでまとめたメンバのデータ構造にはS式の項で述べたcons(Cellのポインタを二つ持つデータ構造)とatomを含む。今回作成する処理系のatomはsymbol、integer、 primitive、closure、macroである。</p>
+      <p>CellにLISP処理系で利用するデータ構造を詰め込む理由には、Cellというひとつのデータ構造で処理系で利用するS式を全て表現できることの他に、データのサイズを一定にし、GCでのメモリ領域の断片化を防ぐ意味も含まれてる。</p>
+      <p>作成した処理系ではCellはSCMという名前にtypedefしている</p>
       <div class="figure">
 	<pre><code>typedef struct _Cell* SCM; /* scheme cell object interface */
 struct _Cell {
@@ -769,30 +769,30 @@ struct _Cell {
         /* more ... */
     } object; /* cell object */
 };</code></pre>
-	<div class="caption">Figure 25. Cell�������ȴ��(scheme.h)</div>
+	<div class="caption">Figure 25. Cellの定義の抜粋(scheme.h)</div>
       </div>
-      <p>�ʤ�Cell�Τ���ε����ΰ�γ��ݤˤ�GC������������äƤ���롣���ʳ��Ǥ����̤ʴ���������malloc�ΤߤǺѤޤ��롣Cell�γ��ݤˤĤ��Ƥ�GC�ι�(4.4.1)�Ǿܤ����Ҥ٤롣</p>
+      <p>なおCellのための記憶領域の確保にはGCが深くかかわってる来る。現段階では特別な管理せずにmallocのみで済ませる。Cellの確保についてはGCの項(4.4.1)で詳しく述べる。</p>
 
 
-      <h4 id="hl.4.3.2">4.3.2.����ܥ�ơ��֥�</h4>
-      <p>����ܥ�Ȥ����ǡ�����¤��scheme.h�ǡ�����ܥ롢����ܥ�ơ��֥�Ȥ�������Ԥ��ؿ���symbol.c�ˤ�������Ƥ��롣</p>
-      <p>����ܥ�Ȥ�LISP��atom��̾����Ĥ����ɤ�ǡ�����¤�Ǥ��롣Ʊ��̾������ĥ���ܥ�Ͼ��Ʊ�����֥������Ȥ����Ѥ��뤳�ȡ��Ĥޤ�Ʊ������ܥ��Ʊ�����ɥ쥹����Ĥ��Ȥ�LISP�����ϤǤϵ����롣�����¸����뤿��˥���ܥ�ơ��֥�����Ѥ��롣�ܽ����ϤǤϥ���ܥ�ơ��֥�ϥ�������ϥå���Ǽ¸����Ƥ��롣����ܥ��̾��(ʸ����)������롣�Ϥ����̾���Υϥå����ͤ��ᡢ��������ϥå���ΰ��֤���ꤹ�롣����S����Ʊ�ͤ�Cons Cell�����Ѥ��Ƥ��������ꥹ�Ȥ򤿤ɤꡢʸ�����Ʊ�ͤ�̾������ĥ���ܥ����롣̾�����б����륷��ܥ뤬¸�ߤ��ʤ����Ͽ����˥���ܥ��������ƥ���ܥ�ơ��֥���ɲä�Ԥ���</p>
-      <p>̾�����饷��ܥ����뤳�Ȥ�intern�ȸƤ֡�</p>
+      <h4 id="hl.4.3.2">4.3.2.シンボルテーブル</h4>
+      <p>シンボルというデータ構造はscheme.hで、シンボル、シンボルテーブルとその操作を行う関数はsymbol.cにて定義している。</p>
+      <p>シンボルとはLISPのatomで名前をつかさどるデータ構造である。同じ名前を持つシンボルは常に同じオブジェクトを利用すること、つまり同じシンボルは同じアドレスを持つことがLISP処理系では求められる。これを実現するためにシンボルテーブルを利用する。本処理系ではシンボルテーブルはチェインハッシュで実現している。シンボルは名前(文字列)から求める。はじめに名前のハッシュ値を求め、チェインハッシュの位置を決定する。次にS式と同様にCons Cellを利用している線形リストをたどり、文字列と同様の名前を持つシンボルを求める。名前に対応するシンボルが存在しない場合は新たにシンボルを作成してシンボルテーブルに追加を行う。</p>
+      <p>名前からシンボルを求めることをinternと呼ぶ。</p>
       <div class="figure">
-	<img src="./image/symbol_table.gif" alt="����ܥ�ơ��֥�" />
-	<div class="caption">Figure 26. ����ܥ�ơ��֥�</div>
+	<img src="./image/symbol_table.gif" alt="シンボルテーブル" />
+	<div class="caption">Figure 26. シンボルテーブル</div>
       </div>
 
 
       <h4 id="hl.4.3.3">4.3.3.reader</h4>
-      <p>reader��read.c��������Ƥ��롣S�����ɤ߼��Cell�����Ѥ��ƥꥹ�Ȥ�������롣</p>
-      <p>�ɤ߹����S���λ�����ϤˤĤ��Ƥ�R5RS[1]�򻲹ͤ˺����������Ƶ��߲����Υѡ����ȤʤäƤ��롣������reader����������ꥹ�Ȥ��̾�primitive��closure��macro�ʤɤΤ�ޤޤʤ�Cell�����ǤǤ�����Τ��֤���primitive��closure��macro�ʤɤ�4.3.5����������eval�ˤơ�symbol��«�����줿�ͤ���Ф����ꡢ�ؿ���¹Ԥ��뤳�Ȥˤ���������Τ���Ǥ��롣</p>
+      <p>readerはread.cに定義している。S式を読み取りCellを利用してリストを作成する。</p>
+      <p>読み込めるS式の字句解析についてはR5RS[1]を参考に作成した。再帰降下型のパーサとなっている。　このreaderが生成するリストは通常primitive、closure、macroなどのを含まないCellだけでできたものを返す。primitive、closure、macroなどは4.3.5で説明するevalにて、symbolに束縛された値を取り出したり、関数を実行することにより作成するのが常である。</p>
 
 
       <h4 id="hl.4.3.4">4.3.4.print</h4>
-      <p>print��print.c��������Ƥ��롣</p>
-      <p>print��S����ɽ�����뤿��ε����Ǥ��롣print�����Τϵ����if-elseʸ�Ǥ��롣�����Ȥ���Ϳ����줿S�������Ǥˤ��碌�ư�����Ԥ������Ǥ�Atom�ξ���print������Atom���б����������Ԥ��������Ǥ�Cons Cell�ꥹ�Ȥ�ɽ���ξ���pirnt��print_list��������Ϥ���(Figure 27. (1))��</p>
-      <p>print_list��Cons Cell�򤿤ɤꤽ�줾������Ǥ������print���Ӥ������ꥹ�Ȥ�ɽ����Ԥ�(Figure 28. (1))��</p>
+      <p>printはprint.cに定義している。</p>
+      <p>printはS式を表示するための機構である。printの本体は巨大なif-else文である。引数として与えられたS式の要素にあわせて印字を行う。要素がAtomの場合はprintがそのAtomに対応する印字を行う。　要素がCons Cellリストの表示の場合はpirntはprint_listに役割を譲渡する(Figure 27. (1))。</p>
+      <p>print_listはCons Cellをたどりそれぞれの要素を引数にprintをよびだし、リストの表示を行う(Figure 28. (1))。</p>
       <div class="figure">
 	<pre><code>SCM print(SCM sexp, FILE *file)
 {
@@ -831,7 +831,7 @@ struct _Cell {
     }
     return SCM_UNDEFINED;
 }</code></pre>
-	<div class="caption">Figure 27. print�ؿ�(print.c)</div>
+	<div class="caption">Figure 27. print関数(print.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static SCM print_list(SCM sexp, FILE *file)
@@ -848,73 +848,73 @@ struct _Cell {
     putc(')', file);
     return SCM_NULL;
 }</code></pre>
-	<div class="caption">Figure 28. print_list�ؿ�(print.c)</div>
+	<div class="caption">Figure 28. print_list関数(print.c)</div>
       </div>
 
 
-      <h4 id="hl.4.3.5">4.3.5.�Ķ�</h4>
-      <p>�Ķ��ˤĤ��Ƥμ�����env.c��������Ƥ��롣eval�ǥץ�������ɾ������ݤ��ѿ����ͤ���Ф��褬�Ķ��Ǥ��롣���Τ���Ķ��ϥ������פ������Ǥ���Ȥ⤤���롣</p>
+      <h4 id="hl.4.3.5">4.3.5.環境</h4>
+      <p>環境についての実装はenv.cに定義している。evalでプログラムを評価する際に変数の値を取り出す先が環境である。そのため環境はスコープと等価であるともいえる。</p>
       <div class="figure">
-	<img src="./image/lookup_symbol.gif" alt="�Ķ������ͤ���Ф�" />
-	<div class="caption">Figure 29. �Ķ������ͤ���Ф�</div>
+	<img src="./image/lookup_symbol.gif" alt="環境から値を取り出す" />
+	<div class="caption">Figure 29. 環境から値を取り出す</div>
       </div>
-      <p>���ֳ�¦�δĶ��ϥȥåץ�٥�ȸƤФ�LISP�����Ϥ���ǥ������Х�ʤ�ΤǤ��롣�ȥåץ�٥�Ǥϥ���ܥ���ͤ����а�δط��Ȥʤ뤿�ᡢ����ܥ뤽�Τ�Τ��ͤ��Ϣ�դ��뤳�Ȥˤ��ȥåץ�٥�Ķ���¸����롣�ȥåץ�٥�ʳ��δĶ��ˤĤ��Ƥϡ�Figure 30.�Τ褦�˥���ܥ���ͤΥꥹ�ȤΥڥ���ꥹ�ȤȤ��ƻ��Ĥ��Ȥˤ��¸����롣�������Ķ���lambda���ǥץ�����������������Ȥ��˺�������롣</p>
+      <p>一番外側の環境はトップレベルと呼ばれLISP処理系の中でグローバルなものである。トップレベルではシンボルと値が一対一の関係となるため、シンボルそのものと値を関連付けることによりトップレベル環境を実現する。トップレベル以外の環境については、Figure 30.のようにシンボルと値のリストのペアをリストとして持つことにより実現する。新しい環境はlambda式でプロシージャを作成するときに作成される。</p>
       <div class="figure">
 	<pre><code>environment = ((var1 var2 var3 ...)
                      (val1 val2 val3 ...))
 environments =  (environmentN environmentN-1 ... )</code></pre>
-	<div class="caption">Figure 30. �ꥹ�Ȥˤ��Ķ��μ¸���ˡ</div>
+	<div class="caption">Figure 30. リストによる環境の実現方法</div>
       </div>
-      <p>�Ķ������Figure 31.�ˡ����ΤȤ��δĶ��Υꥹ��ɽ����Figure 32.�ˡ�Atom��Cons Cell���Ѥ����ǡ�����¤��Figure 33.�˼�����(lambda (x) ...)�����Ф��Ķ���Ķ�����(lambda (y) ... )�����Ф��Ķ���Ķ�2�Ȥ��롣������ǤϴĶ�1�ˤ�x��20���б��դ���졢�Ķ�2�ˤ�y��10���б��դ�����롣���δĶ�����(+ x y)��ɾ����Ԥ��ȼ���(+ 20 10)�Ȥʤꡢ30�������롣</p>
+      <p>環境の例をFigure 31.に、そのときの環境のリスト表記をFigure 32.に、AtomとCons Cellを用いたデータ構造をFigure 33.に示す。(lambda (x) ...)が作り出す環境を環境１、(lambda (y) ... )が作り出す環境を環境2とする。この例では環境1にてxが20に対応付けられ、環境2にてyが10に対応付けされる。この環境下で(+ x y)の評価を行うと式は(+ 20 10)となり、30が得られる。</p>
       <div class="figure">
-	<img src="./image/environment_is_made_by_lambda.gif" alt="lambda�������Ф��������Ķ����Ȥ��Ķ���ɽ����" />
-	<div class="caption">Figure 31. lambda�������Ф��������Ķ����Ȥ��Ķ���ɽ����</div>
+	<img src="./image/environment_is_made_by_lambda.gif" alt="lambda式が作り出す新しい環境（枠が環境を表す）" />
+	<div class="caption">Figure 31. lambda式が作り出す新しい環境（枠が環境を表す）</div>
       </div>
       <div class="figure">
-	<pre><code>( ((y) . (10)) // �Ķ�2
-  ((x) . (20)) // �Ķ�1
+	<pre><code>( ((y) . (10)) // 環境2
+  ((x) . (20)) // 環境1
 )</code></pre>
-	<div class="caption">Figure 32. (+ x y)��ɾ�����δĶ�(�ꥹ��ɽ��)</div>
+	<div class="caption">Figure 32. (+ x y)の評価時の環境(リスト表記)</div>
       </div>
       <div class="figure">
-	<img src="./image/environment_inner_form.gif" alt="(+ x y)��ɾ�����δĶ�(������¤)" />
-	<div class="caption">Figure 33. (+ x y)��ɾ�����δĶ�(������¤)</div>
+	<img src="./image/environment_inner_form.gif" alt="(+ x y)の評価時の環境(内部構造)" />
+	<div class="caption">Figure 33. (+ x y)の評価時の環境(内部構造)</div>
       </div>
 
 
       <h4 id="hl.4.3.6">4.3.6.Static scope</h4>
-      <p>�����ƥ��å���������(Static scope)�Ȥ�4.3.5�Ǽ������Ķ���Ȥä��ѿ����ͤ���Ф���ˡ�Ǥ��롣�����������Ǥ⼨�����Ȥ��ꡢ�����ƥ��å��������פǤ�ʣ���δĶ���Ʊ�ͤ��ѿ����Ȥ��Ƥ������ϡ����˰��ֶᤤ�Ķ����ͤ����Ѥ��롣�ޤ��������ƥ��å��������פ�lambda�����ͤ���������Ȥ��δĶ�����¸����Τǡ��ץ������������ȤǤϡ���������Ȥ��δĶ����ѿ������ѤǤ��롣Scheme��LISP�����ϤȤ��ƤϤ���ƥ����ƥ��å��������פ���Ѥ��ư��衢���ߤǤϥ����ƥ��å��������פ���ή�Ǥ��롣</p>
-      <p>����Ȥϰۤʤꡢ�����LISP�ϥ����ʥߥå��������פ���Ѥ��Ƥ�����lambda���ǥץ���������Ϥ����Υ����ɤ����ҤȤ��ư���������������δĶ�����¸������Ŭ���������δĶ����ѿ������Ѥ��Ƥ�����</p>
-      <p>�ܽ����ϤǤϥ����ƥ��å��������פ�¸����뤿��ˡ�lambda�������Ф��ץ��������㤬�Ķ�����¸���롣�ץ��������㤬�Ķ�����¸���뤳�Ȥˤ�ꡢ���������Τ�ư��򥹥��ƥ��å��������פˤ��뤳�Ȥ��Ǥ��롣</p>
+      <p>スタティックスコープ(Static scope)とは4.3.5で示した環境を使って変数の値を取り出す方法である。３．１．５でも示したとおり、スタティックスコープでは複数の環境で同様の変数が使われていた場合は、式に一番近い環境の値を利用する。また、スタティックスコープはlambda式の様に定義したときの環境を保存するので、プロシージャの中身では、定義したときの環境の変数が利用できる。SchemeがLISP処理系としてはじめてスタティックスコープを採用して以来、現在ではスタティックスコープが主流である。</p>
+      <p>これとは異なり、初期のLISPはダイナミックスコープを採用していた。lambda式でプロシージャはただのコードの断片として扱い、定義した時の環境を保存せず、適応した時の環境の変数を利用していた。</p>
+      <p>本処理系ではスタティックスコープを実現するために、lambda式が作り出すプロシージャが環境を保存する。プロシージャが環境を保存することにより、処理系全体の動作をスタティックスコープにすることができる。</p>
 
 
-      <h4 id="hl.4.3.7">4.3.7.ɾ��</h4>
-      <p>eval��apply��eval.c��������Ƥ��롣�����Ϥο�¡��ʬ�Ǥ��롣reader�����������ꥹ�Ȥ��ᡢɾ����evaluation�ˡ��ؿ���Ŭ����apply�ˤ�Ԥ���3.1.4��Figure 17.����ټ�����</p>
+      <h4 id="hl.4.3.7">4.3.7.評価</h4>
+      <p>evalとapplyはeval.cに定義している。処理系の心臓部分である。readerが作成したリストを解釈、評価（evaluation）、関数の適応（apply）を行う。3.1.4のFigure 17.を再度示す。</p>
       <div class="figure">
 	<table summary="eval">
 	  <tbody>
 	    <tr>
-	      <th>���μ���</th>
-	      <th>ɾ������ˡ</th>
+	      <th>式の種類</th>
+	      <th>評価の方法</th>
 	    </tr>
 	    <tr>
-	      <td>�ꥹ��</td>
-	      <td>(&lt;�ؿ�&gt; &lt;����&gt; ... &lt;����&gt;)�Τ褦�ʴؿ��ƤӽФ��Ȥߤʤ���ɾ�����롣</td>
+	      <td>リスト</td>
+	      <td>(&lt;関数&gt; &lt;引数&gt; ... &lt;引数&gt;)のような関数呼び出しとみなして評価する。</td>
 	    </tr>
 	    <tr>
-	      <td>����ܥ�</td>
-	      <td>����ܥ���б��դ���줿�ͤ���Ф���</td>
+	      <td>シンボル</td>
+	      <td>シンボルに対応付けられた値を取り出す。</td>
 	    </tr>
 	    <tr>
-	      <td>����ܥ�ʳ���Atom</td>
-	      <td>Atom���Ȥ��֤���</td>
+	      <td>シンボル以外のAtom</td>
+	      <td>Atom自身を返す。</td>
 	    </tr>
 	  </tbody>
 	</table>
-	<div class="caption">Figure 34. LISP�μ���ɾ��ˡ</div>
+	<div class="caption">Figure 34. LISPの式の評価法</div>
       </div>
-      <p>eval�ǤϿ��ͤΤ褦��¨�ͤ䥷��ܥ��«�����줿�ͤ���Ф����ꤹ��(Figure 35. (1),(2))��</p>
-      <p>�ޤ����ꥹ�Ȥ���Ƭ��atom��ɾ�������Ȥ����ͤ��ؿ��Ȥ��Ƽ¹Ԥ��뤬�����δؿ��������Ŭ��������ˤ�apply�����Ѥ���(Figure 35. (3))��apply�Ϥ������apply_primitive(Figure 36.)��apply_closure(Figure 37.)��ƤӽФ��������δؿ�����Ǥ����eval���ƤӽФ���롣eval��apply����ߺƵ��ƤӽФ���Ԥ��ʤ���ץ�������¹Ԥ��롣</p>
+      <p>evalでは数値のような即値やシンボルに束縛された値を取り出したりする(Figure 35. (1),(2))。</p>
+      <p>また、リストの先頭のatomを評価したときの値が関数として実行するが、この関数を引数に適応させるにはapplyを利用する(Figure 35. (3))。applyはその中でapply_primitive(Figure 36.)とapply_closure(Figure 37.)を呼び出す。これらの関数の中でさらにevalが呼び出される。evalとapplyは相互再帰呼び出しを行いながらプログラムを実行する。</p>
       <div class="figure">
 	<pre><code>SCM eval(SCM sexp, SCM env)
 {
@@ -940,7 +940,7 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     }
     return sexp;
 }</code></pre>
-	<div class="caption">Figure 35. eval��ȴ��(eval.c)</div>
+	<div class="caption">Figure 35. evalの抜粋(eval.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static SCM apply(SCM subr, SCM arg, struct EvalState *state, SCM need_argument_eval)
@@ -954,7 +954,7 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
         return NULL;
     }
 }</code></pre>
-	<div class="caption">Figure 36. apply��ȴ��(eval.c)</div>
+	<div class="caption">Figure 36. applyの抜粋(eval.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static SCM apply_closure(SCM closure, SCM arg, struct EvalState *state, SCM need_argument_eval)
@@ -971,7 +971,7 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     else { evaled_arg = eval_list(arg, state-&gt;env);    }
     closure_env = extend_environment(CLOSURE_ARGS(closure), evaled_arg, CLOSURE_ENV(closure));
     while (! NULL_P(body)) {
-        // need_argument_eval�������Ƶ� /*  (1)  */
+        // need_argument_evalで末尾再帰 /*  (1)  */
         if (LIST_1_P(body) &amp;&amp; FALSE_P(need_argument_eval)) {
             state-&gt;status = EVAL_STATUS_NEED_EVAL;
             state-&gt;env=closure_env;
@@ -983,7 +983,7 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     }
     return result;
 }</code></pre>
-	<div class="caption">Figure 37. apply_closure��ȴ��(eval.c)</div>
+	<div class="caption">Figure 37. apply_closureの抜粋(eval.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static SCM apply_primitive(SCM subr, SCM arg, struct EvalState *state, SCM need_argument_eval)
@@ -1020,50 +1020,50 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     }
     return SCM_NULL;
 }</code></pre>
-	<div class="caption">Figure 38. apply_primitive��ȴ��(eval.c)</div>
+	<div class="caption">Figure 38. apply_primitiveの抜粋(eval.c)</div>
       </div>
 
 
-      <h4 id="hl.4.3.8">4.3.8.�����Ƶ��κ�Ŭ��</h4>
-      <p>Lisp����Scheme�Ǥϡ������Ƶ��κ�Ŭ����������ѤȤ��ƴޤޤ�Ƥ��ꡢ��Ŭ���Τ���Υ��르�ꥺ��Ϥ���eval��apply�˵��Ҥ��롣</p>
-      <p>����ѥ��뤷��VM��CPU�Ǽ¹Ԥ�������ϤʤɤǤϡ��Ƶ���롼�פ��Ѵ��������Ū�ʥ��르�ꥺ�ब���ѤǤ��롣�����������������������ϤΤ褦��S����ľ�ܲ�ᤷ���Ƶ��˥ͥ��ƥ��֥����å������Ѥ�������ϤǤϤ�����ˡ�����ѤǤ��ʤ���</p>
-      <p>��äơ�����κ�Ŭ���ˤϡ�SIOD�ʤɸŤ������ϤǺ��Ѥ���Ƥ�����ˡ�����Ѥ��롣���르�ꥺ��ϡ��Ǹ��ɾ������ꥹ�Ȥ򤤤ä���eval���֤������Υꥹ�Ȥ����eval���뤳�Ȥˤ�äƼ¸�����(Figure 38. (1))��Figure 39.�Ϥ��Υ��르�ꥺ��Υ����å��Ǥ��롣</p>
+      <h4 id="hl.4.3.8">4.3.8.末尾再帰の最適化</h4>
+      <p>Lisp方言Schemeでは、末尾再起の最適化が言語使用として含まれており、最適化のためのアルゴリズムはこのeval、applyに記述する。</p>
+      <p>コンパイルしてVMやCPUで実行する処理系などでは、再起をループに変換する一般的なアルゴリズムが採用できる。しかし、今回作成する処理系のようにS式を直接解釈し、再起にネイティブスタックを利用する処理系ではこの方法は利用できない。</p>
+      <p>よって、今回の最適化には、SIODなど古い処理系で採用されている方法を利用する。アルゴリズムは、最後に評価するリストをいったんevalに返し、そのリストを再度evalすることによって実現する(Figure 38. (1))。Figure 39.はこのアルゴリズムのスケッチである。</p>
       <div class="figure">
-	<img src="./image/tail_recursion_rough_sketch.gif" alt="�����Ƶ���Ŭ�����르�ꥺ��Υ����å���a��b�Ϥ��줾��10��5��«������Ƥ�����)" />
-	<div class="caption">Figure 39. �����Ƶ���Ŭ�����르�ꥺ��Υ����å���a��b�Ϥ��줾��10��5��«������Ƥ�����)</div>
+	<img src="./image/tail_recursion_rough_sketch.gif" alt="末尾再帰最適化アルゴリズムのスケッチ（a、bはそれぞれ10、5が束縛されている場合)" />
+	<div class="caption">Figure 39. 末尾再帰最適化アルゴリズムのスケッチ（a、bはそれぞれ10、5が束縛されている場合)</div>
       </div>
-      <p>�ꥹ�Ȥκ�ɾ����ɾ����ɬ�פ��ɤ����Υե饰�Ǵ������롣�ե饰���ͤ򼨤����(Figure39,40.�Ǥ�is as value���ץ������Ǥ�EVAL_STATUS_RETURN_VALUE�ˤξ���apply�ؿ�������ͤ��ͤȤߤʤ����Τޤޡ�eval�ؿ�������ͤȤ�����ɾ���򼨤����(Figure 39,40.�ξ���is need eval���ץ������Ǥ�EVAL_STATUS_NEED_EVAL�ˤξ��Ϻ�ɾ����Ԥ���</p>
-      <p>���κ�ɾ���δĶ��ϺǸ�Υꥹ�Ȥ�ɾ��������δĶ��Ȱ��פ��Ƥ���ɬ�פ����뤿�ᡢ���餫����ˡ�����Ѥ���Ķ��򿷤����Ķ��˹�������ɬ�פ����롣����������������ϤǤ�eval�ؿ��ΰ����ˤϴĶ��������eval�ؿ����餤�ä����᤹���˴Ķ��򹹿����Ƥ���(Figure 40.)��</p>
+      <p>リストの再評価は評価が必要かどうかのフラグで管理する。フラグが値を示す場合(Figure39,40.ではis as value、プログラムではEVAL_STATUS_RETURN_VALUE）の場合はapply関数の戻り値は値とみなしそのまま、eval関数の戻り値とし、再評価を示す場合(Figure 39,40.の場合はis need eval、プログラムではEVAL_STATUS_NEED_EVAL）の場合は再評価を行う。</p>
+      <p>この再評価の環境は最後のリストを評価する時の環境と一致している必要があるため、何らかの方法で利用する環境を新しい環境に更新する必要がある。今回作成した処理系ではeval関数の引数には環境を持たせeval関数からいったん戻す前に環境を更新している(Figure 40.)。</p>
       <div class="figure">
-	<img src="./image/tail_recursion_sketch.gif" alt="�Ķ��ι������θ�����ܤ���ư��Υ����å�" />
-	<div class="caption">Figure 40. �Ķ��ι������θ�����ܤ���ư��Υ����å�</div>
+	<img src="./image/tail_recursion_sketch.gif" alt="環境の更新を考慮した詳しい動作のスケッチ" />
+	<div class="caption">Figure 40. 環境の更新を考慮した詳しい動作のスケッチ</div>
       </div>
-      <p>LISP���������Τ������Ƶ��κ�Ŭ�����б�����ˤϡ��ü�������Ƥȥץ���������������Ƶ��κ�Ŭ����Ԥ��褦���ѹ�����Ф褤������ϡ�LISP�Υץ������Ϻǽ�Ū�ˤ��ü�����ȥץ������������Ĥδؿ��μ¹Ԥ˴��󤵤�뤫��Ǥ��롣</p>
+      <p>LISP処理系全体が末尾再帰の最適化に対応するには、特殊形式全てとプロシージャで末尾再帰の最適化を行うように変更すればよい。これは、LISPのプログラムは最終的には特殊形式とプロシージャの二つの関数の実行に簡約されるからである。</p>
 
 
-      <h3 id="hl.4.4">4.4.GC������</h3>
-      <p>4.3.1�����������褦��Cell�γ��ݤ˴ؤ��Ƥ�������������롣����Ū�ˤ�alloc.c�ˤ�����Cell�γ��ݤ�GC��Ԥ���³���򵭽Ҥ��롣�ʤ�GC�ˤ��ݼ�Ū�ޡ�������ɥ���������GC����Ѥ��롣</p>
+      <h3 id="hl.4.4">4.4.GCの制作</h3>
+      <p>4.3.1で説明したようにCellの確保に関しては本節で説明する。具体的にはalloc.cにおいてCellの確保とGCを行う手続きを記述する。なおGCには保守的マークアンドスウィープGCを使用する。</p>
 
 
       <h4 id="hl.4.4.1">4.4.1.Cell allocator</h4>
-      <p>GC�Ǥ�ưŪ�˳��ݤ����ǡ��������ƴ�������ɬ�פ����롣���Τ��ᡢGC�����Ѥ�����ˤ�GC���б��������ѤΥ��ꥢ������������������Υ��������������Ѥ���ɬ�פ��롣���Τ���Cell����ݤ������ѤΥ�����������������롣</p>
-      <p>����Cell�����������ϰ��٤����̤Υҡ��פ���ݤ���Cell��ñ�̤��ڤ���ꤹ����Ȥߤ�������Ƥ��롣�ҡ��פκǽ�����Ǥ�ƥҡ��ץڡ�����free Cell�δ��������Ѥ��Ƥ��롣</p>
-      <p>Cell�����������Ǥ�free Cell�λĤ�������0�ˤʤ�Ȥޤ�GC��Cell�������롣���θ�free Cell������ʾ����Ǥ��ʤ��ä���硢malloc�ǥҡ��פ��ɲó��ݤ��ơ�free Cell���ɲä��롣</p>
+      <p>GCでは動的に確保したデータを全て管理する必要がある。そのため、GCを利用する場合にはGCに対応した専用のメモリアロケータを作成しそのアロケータを利用する必要がる。そのためCellを確保する専用のアロケータを定義する。</p>
+      <p>このCellアロケータは一度に大量のヒープを確保してCellの単位で切り売りする仕組みを実装してある。ヒープの最初の要素を各ヒープページとfree Cellの管理に利用している。</p>
+      <p>Cellアロケータではfree Cellの残り総数が0になるとまずGCでCellを回収する。その後free Cellが一定以上回収できなかった場合、mallocでヒープを追加確保して、free Cellを追加する。</p>
       <div class="figure">
-	<img src="./image/cell_management.gif" alt="Cell�δ���" />
-	<div class="caption">Figure 41. Cell�δ���</div>
+	<img src="./image/cell_management.gif" alt="Cellの管理" />
+	<div class="caption">Figure 41. Cellの管理</div>
       </div>
 
 
-      <h4 id="hl.4.4.2">4.4.2.�ޡ�������ɥ�������</h4>
-      <p>GC�μ����ˤ��ݼ�Ū�ޡ�������ɥ��������פ����Ѥ��롣�ݼ�Ū��GC�μ���ˡ�ˤĤ��Ƥϼ��ξϤ�������Ԥ��������ǤϤ��δ��äǤ���ޡ�������ɥ��������פμ����ˤĤ���������Ԥ���</p>
-      <p>�ޡ�������ɥ���������GC�Ȥϼ������ʳ��Υ��르�ꥺ������Ѥ���GC�Ǥ��롣</p>
+      <h4 id="hl.4.4.2">4.4.2.マークアンドスイープ</h4>
+      <p>GCの実装には保守的マークアンドスウィープを利用する。保守的なGCの実装法については次の章で説明を行い、ここではその基礎であるマークアンドスウィープの実装について説明を行う。</p>
+      <p>マークアンドスウィープGCとは次の二段階のアルゴリズムを利用するGCである。</p>
       <ol>
-	<li>���ƤλȤ��Ƥ���Cell�˥ޡ����򤹤롣</li>
-	<li>�ޡ������դ��Ƥ��ʤ�Cell�������롣</li>
+	<li>全ての使われているCellにマークをする。</li>
+	<li>マークの付いていないCellを回収する。</li>
       </ol>
-      <p class="no_indent">�ʲ��Τ���ư���ܤ����������Ƥ�����</p>
-      <p>�ޡ�������ɥ��������פǥޡ�����Ԥ������Ȥʤ륪�֥������Ȥ�Root�Ȥ�֡�LISP�����ϤǤ�Root�Ȥʤ륪�֥������Ȥ��ͤ�«������Ƥ��륷��ܥ롢�������Х��ѿ����������줿Cell���������ݼ�ŪGC���оݤȤʤ�ޥ��󥹥��å��ȥ쥸�����ˤ���Cell�Ǥ��롣GC�ǤϤޤ������Root���������������Ǥ������ƤΥ��֥������Ȥ˥ޡ�����Ĥ��Ƥ����������μ��ϥޡ����ΤĤ��Ƥ��ʤ����֥������Ȥβ����Ԥ��������ơ�����Ǥ������֥������Ȥ������˱����ƥҡ��פγ�ĥ��Ԥ���</p>
+      <p class="no_indent">以下のその動作を詳しく説明していく。</p>
+      <p>マークアンドスウィープでマークを行う始点となるオブジェクトをRootとよぶ。LISP処理系でのRootとなるオブジェクトは値が束縛されているシンボル、グローバル変数に代入されたCell、そして保守的GCの対象となるマシンスタックとレジスタにあるCellである。GCではまずこれらRootを走査し、走査できる全てのオブジェクトにマークをつけていく。走査の次はマークのついていないオブジェクトの回収を行う。そして、回収できたオブジェクトの総数に応じてヒープの拡張を行う。</p>
       <div class="figure">
 	<pre><code>static void scheme_gc(void)
 {
@@ -1078,10 +1078,10 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     }
     current_search_page = page_list;
 }</code></pre>
-	<div class="caption">Figure 42. scheme_gc��ȴ��(alloc.c)</div>
+	<div class="caption">Figure 42. scheme_gcの抜粋(alloc.c)</div>
       </div>
-      <p>���֥������ȤΥޡ�����Ԥ�gc_mark_object�Ǥ�Root�Ȥʤ륪�֥������Ȥ���˺Ƶ�Ū�˥ꥹ�Ȥ򤿤ɤꥪ�֥������Ȥ˥ޡ������Ƥ����������Ǥ������֥������Ȥ�Cell�Τ��ȤǤ��롣����䤹�Ǥ˥ޡ������Ĥ��Ƥ��륪�֥������ȤϤ���ʾ��������ʤ��褦�ˤϤ����Ƥ���(Figure 43. (1))���ޤ���Cell����η��ˤ��碌�Ƽ��Υ��֥������Ȥؤ���������ˡ���Ѥ��Ƥ���(Figure 43. (2))������˼����������륪�֥������Ȥ��ҤȤĤˤʤä�����gotoʬ�������Ƶ��κ�Ŭ����Ԥ��������å��ξ�����ޤ��Ƥ���(Figure 43. (3))��</p>
-      <p>�����֥������Ȥβ����Ԥ�gc_sweep�Ǥϳƥҡ��ץڡ������������������ޡ����ΤĤ��Ƥ��ʤ�Cell��Freelist���ɲä���(Figure 44. (1))���ޡ����ΤĤ��Ƥ���Cell�ϥޡ����򳰤��ơ�����β���������Ƥ���(Figure 44. (2))��</p>
+      <p>オブジェクトのマークを行うgc_mark_objectではRootとなるオブジェクトを基準に再帰的にリストをたどりオブジェクトにマークしていく。ここでいうオブジェクトはCellのことである。定数やすでにマークがついているオブジェクトはそれ以上走査しないようにはじいている(Figure 43. (1))。また、Cellの中の型にあわせて次のオブジェクトへの走査の方法を変えている(Figure 43. (2))。さらに次に走査するオブジェクトがひとつになった場合はgoto分で末尾再起の最適化を行い、スタックの消費を抑えている(Figure 43. (3))。</p>
+      <p>　オブジェクトの回収を行うgc_sweepでは各ヒープページを全て走査し、マークのついていないCellをFreelistに追加する(Figure 44. (1))。マークのついているCellはマークを外して、次回の回収に備えている(Figure 44. (2))。</p>
       <div class="figure">
 	<pre><code>static void gc_mark_object(SCM obj)
 {
@@ -1116,7 +1116,7 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
         goto loop; /*  (3)  */
     }
 }</code></pre>
-	<div class="caption">Figure 43. gc_mark_object��ȴ��(alloc.c)</div>
+	<div class="caption">Figure 43. gc_mark_objectの抜粋(alloc.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static int gc_sweep(void) {
@@ -1148,18 +1148,18 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     }
     return collect;
 }</code></pre>
-	<div class="caption">Figure 44. gc_sweep��ȴ��(alloc.c)</div>
+	<div class="caption">Figure 44. gc_sweepの抜粋(alloc.c)</div>
       </div>
 
 
-      <h4 id="hl.4.4.3">4.4.3.�ݼ�ŪGC����ˡ</h4>
-      <p>�ݼ�Ū��GC�Ȥϥ����å����ɥ쥹����Ȥʤɤ����ҡ��פ˳��ݤ���GC�δ������ˤ��륪�֥������Ȥ򤵤��Ƥ�����ˡ����Υ��֥������Ȥ�������Ǥ���ȹͤ�GC��Ԥ���ˡ�Ǥ��롣���Τ�GC�Ȥϰۤʤꡢ������Υ��֥������Ȥ餷����Τϲ����Ԥ�ʤ������ݼ�Ū�ȸƤФ�롣</p>
-      <p>C����ʤɤǥ����å�����Υ��ɥ쥹������ˡ�LISP��Ԥ��ץ���������Ƭ�ǥ��������ѿ���������롣���Υ��������ѿ��Υ��ɥ쥹�򥹥��å�����Υ��ɥ쥹�Ȥ��롣</p>
+      <h4 id="hl.4.4.3">4.4.3.保守的GCの方法</h4>
+      <p>保守的なGCとはスタックアドレスの中身などが、ヒープに確保したGCの管理下にあるオブジェクトをさしている場合に、そのオブジェクトが利用中であると考えGCを行う方法である。正確なGCとは異なり、利用中のオブジェクトらしきものは回収を行わないため保守的と呼ばれる。</p>
+      <p>C言語などでスタックの底のアドレスを得るに、LISPを行うプログラムの先頭でローカル変数を宣言する。このローカル変数のアドレスをスタックの底のアドレスとする。</p>
       <div class="figure">
 	<pre><code>#define SCHEME_STACK_INITIALIZE                        \
   SCM __dummy_scheme_stack_start_object;           \
   stack_initialize(&amp;__dummy_scheme_stack_start_object)</code></pre>
-	<div class="caption">Figure 45. �����å��ν������ȴ��(scheme.h)</div>
+	<div class="caption">Figure 45. スタックの初期化の抜粋(scheme.h)</div>
       </div>
       <div class="figure">
 	<pre><code>int main(int argc, char **argv) {
@@ -1171,11 +1171,11 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
         exit(EXIT_SUCCESS);
     }
 }</code></pre>
-	<div class="caption">Figure 46. �����å��ν������ȴ��(main.c)</div>
+	<div class="caption">Figure 46. スタックの初期化の抜粋(main.c)</div>
       </div>
-      <p>���˥����å�����ü�Υ��ɥ쥹�γ��ݤ��뤿��ˡ������å���GC��Ԥ������ɤ�ľ�����ѿ�����κǸ�˥����å�����ü�Υ��ɥ쥹�γ��ݤ��뤿��Υ��������ѿ���������롣���Υ��������ѿ��Υ��ɥ쥹�򥹥��å�����ü�Υ��ɥ쥹�Ȥ��롣</p>
-      <p>�����å����ɥ쥹�Ϥ���Ǽ����Ǥ����ΤǼ��˥쥸���������Ƥ���¸��Ԥ�(Figure 47. (1))���쥸���������Ƥ���¸����ˤ�C�����ɸ��饤�֥���setjmp�����Ѥ��롣jmp_buf�򥹥��å�����ü�Υ��ɥ쥹�γ��ݤ��뤿��Υ��������ѿ�������������롣���ݤ���jmp_buf���Ф���setjmp�ؿ���¹Ԥ����쥸��������Ȥ�jmp_buf����¸����(Figure 47. (2))��</p>
-      <p>�Ǹ�ˤ����ξ��󤫤�ޥ��󥹥��å����ϰϤ��ᡢ�����ΰ���ͤ�GC���������Ƥ���ҡ��פΥ��ɥ쥹���ä����gc_mark_object��¹Ԥ��롣</p>
+      <p>次にスタックの先端のアドレスの確保するために、スタックのGCを行うコードの直前、変数宣言の最後にスタックの先端のアドレスの確保するためのローカル変数を宣言する。このローカル変数のアドレスをスタックの先端のアドレスとする。</p>
+      <p>スタックアドレスはこれで取得できたので次にレジスタの内容の保存を行う(Figure 47. (1))。レジスタの内容を保存するにはC言語の標準ライブラリのsetjmpを利用する。jmp_bufをスタックの先端のアドレスの確保するためのローカル変数の前に宣言する。確保したjmp_bufに対してsetjmp関数を実行し、レジスタの中身をjmp_bufに保存する(Figure 47. (2))。</p>
+      <p>最後にこれらの情報からマシンスタックの範囲を求め、その領域の値がGCが管理しているヒープのアドレスだった場合gc_mark_objectを実行する。</p>
       <div class="figure">
 	<pre><code>static void gc_mark_stack(void) {
     jmp_buf save_register_for_gc_mark;
@@ -1185,18 +1185,18 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
     void *end_of_stack;
     /* (2) register value dump */
     setjmp(save_register_for_gc_mark);
-    /* (1) �����å�����ü��Ͽ */
+    /* (1) スタックの先端を記録 */
     SCHEME_SET_STACK_END(&amp;end_of_stack);
     if (AS_UINT(stack_start) &lt; AS_UINT(stack_end)) {
         start = stack_start;  end = stack_end;
     } else {
         start = stack_end;   end = stack_start;
     }
-    /* �ݼ�ŪGC��Ԥ� */
+    /* 保守的GCを行う */
     for (i = 0; i &lt; sizeof(void *); i++) { gc_mark_memory(start, end, i); }
     return ;
 }</code></pre>
-	<div class="caption">Figure 47. �ݼ�ŪGC�Υ����å��ΰ�ȥ쥸�����μ�����ȴ��(alloc.c)</div>
+	<div class="caption">Figure 47. 保守的GCのスタック領域とレジスタの取得の抜粋(alloc.c)</div>
       </div>
       <div class="figure">
 	<pre><code>static void gc_mark_memory(void *start, void *end, int offset) {
@@ -1205,21 +1205,21 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
         gc_mark_maybe_object(*obj);
     }
 }</code></pre>
-	<div class="caption">Figure 48. �ݼ�ŪGC��ȴ��(alloc.c)</div>
+	<div class="caption">Figure 48. 保守的GCの抜粋(alloc.c)</div>
       </div>
 
 
-      <h2 id="hl.5">5.ɾ��</h2>
-      <p>���餤�ޤ路�ؿ��μ¹����¾�Υ��󥿥ץ꥿����Ӥ�Ԥ����ޤ�����������Ϥκ�����GC�κ����η��ط����ݼ���ưפ��ˤĤ���ɾ����Ԥ���</p>
+      <h2 id="hl.5">5.評価</h2>
+      <p>たらいまわし関数の実行例で他のインタプリタと比較を行う。また、言語処理系の作成とGCの作成の結合関係、保守の容易さについて評価を行う。</p>
 
 
-      <h3 id="hl.5.1">5.1.��ǽ���</h3>
-      <p>��ǽ��Ӥ򤿤餤�ޤ路�ؿ��μ¹Ի��֤ˤ��Ԥ�������оݤˤ�Ʊ�����󥿥ץ꥿��Scheme�����Ϥ�SigScheme[3]�����Ѥ��롣</p>
+      <h3 id="hl.5.1">5.1.性能比較</h3>
+      <p>性能比較をたらいまわし関数の実行時間により行う。比較対象には同じインタプリタのScheme処理系のSigScheme[3]を利用する。</p>
       <div class="figure">
-	<img src="./image/tarai.gif" alt="���餤�ޤ路�ؿ������" />
-	<div class="caption">Figure 49. ���餤�ޤ路�ؿ������</div>
+	<img src="./image/tarai.gif" alt="たらいまわし関数の定義" />
+	<div class="caption">Figure 49. たらいまわし関数の定義</div>
       </div>
-      <p>��Ӥ����Ѥ��������������ɤ򼨤���</p>
+      <p>比較に利用したソースコードを示す。</p>
       <div class="figure">
 	<pre><code>(define tak
  (lambda (x y z)
@@ -1244,51 +1244,51 @@ environments =  (environmentN environmentN-1 ... )</code></pre>
 (exit 0)</code></pre>
 	<div class="caption">Figure 51. tarai.lisp</div>
       </div>
-      <p>�¹Է�̤�ʲ��˼�����</p>
+      <p>実行結果を以下に示す。</p>
       <div class="figure">
 	<pre><code>% time cat tarai.scm | sscm &gt; /dev/null
 cat tarai.scm  0.01s user 0.00s system 71% cpu 0.017 total
 sscm &gt; /dev/null  0.69s user 0.07s system 98% cpu 0.774 total</code></pre>
-	<div class="caption">Figure 52. SigScheme�μ¹Է��</div>
+	<div class="caption">Figure 52. SigSchemeの実行結果</div>
       </div>
       <div class="figure">
 	<pre><code>% time cat tarai.lisp | ./thesischeme &gt; /dev/null
 cat tarai.lisp  0.00s user 0.00s system 19% cpu 0.020 total
 ./thesischeme &gt; /dev/null  5.82s user 0.04s system 97% cpu 5.990 total</code></pre>
-	<div class="caption">Figure 53. �����������(HeapSize=500)</div>
+	<div class="caption">Figure 53. 自作した処理系(HeapSize=500)</div>
       </div>
       <div class="figure">
 	<pre><code>% time cat tarai.lisp | ./thesischeme &gt; /dev/null
 cat tarai.lisp  0.00s user 0.01s system 20% cpu 0.040 total
 ./thesischeme &gt; /dev/null  4.52s user 0.06s system 95% cpu 4.810 total</code></pre>
-	<div class="caption">Figure 54. �����������(HeapSize=1000)</div>
+	<div class="caption">Figure 54. 自作した処理系(HeapSize=1000)</div>
       </div>
       <div class="figure">
 	<pre><code>% time cat tarai.lisp | ./thesischeme &gt; /dev/null
 cat tarai.lisp  0.00s user 0.00s system 35% cpu 0.011 total
 ./thesischeme &gt; /dev/null  2.14s user 0.02s system 99% cpu 2.173 total</code></pre>
-	<div class="caption">Figure 55. �����������(HeapSize=5000)</div>
+	<div class="caption">Figure 55. 自作した処理系(HeapSize=5000)</div>
       </div>
-      <p>���η�̤�ꡢ���٤˳��ݤ���ҡ��ץ��������礭������ۤ�®�٤��Ф뤳�Ȥ��狼�롣���������ҡ��ץ��������礭�����Ƥ�������������Ϥ�SigScheme�����2�ܰʾ�������٤����Ȥ��狼�롣</p>
+      <p>この結果より、一度に確保するヒープサイズを大きくするほど速度が出ることがわかる。しかし、ヒープサイズを大きくしても作成した処理系はSigSchemeと比べ2倍以上処理が遅いことがわかる。</p>
 
 
-      <h3 id="hl.5.2">5.2.��������Ϥ�GC�η��ط�</h3>
-      <p>�̾�θ�������Ϥϥ��ꥢ�������������񸻤򰮤äƤ���Ȳ��ꤹ�롣���Υ��ꥢ����������ޤ൭���ΰ�����������Ф������פʥ����ưŪ�˲�����뤫�����줫�������뤫��ͤ��롣����ȸ��줫��������ˤϸ���˵����ΰ��������򰷤���ǽ��ɬ�פȤʤ롣����ϸ��줬��������ԥ塼���ε���������٤��㤯�ʤ뤿�ᡢ����٤ι⤤�ץ�����ߥ󥰸���ˤϤդ��������ʤ���ǽ�Ǥ��롣�������äơ�GC�ΰ�¸�٤ϸ��������٤ȴ�Ϣ����ȹͤ����롣</p>
-      <p>�����������ΰ���������ϸ�����׵ᤵ�쵭���ΰ���Ϥ��ФɤΤ褦�ʼ�ˡ��ȤäƤ�褤�֥�å��ܥå����ˤʤäƤ롣���Τ��ᥢ�르�ꥺ��β��ɤʤɤ��ȼ��˹Ԥ��롣�����������줬�׵᤹�뵭���ΰ�˰���ε�§(Ʊ�쥵�����ʤ�)�������硢���르�ꥺ��θ�Ψ�����ޤ�롣</p>
-      <p>�������äƵ����ΰ���������ϸ���ΰ����ǡ����˰�¸���롣���������ΰ�����ˤ�������֤ϥץ�����ޡ����鸫���ͽ������������Τ����뤿�ᡢ���λ��֤�����ǤϤʤ��Ф�Ĥ����ϥץ������¹Ի��Υꥢ�륿�������������롣���Τ������¹Ԥ˴ؤ������󤬤����硢�����ΰ�μ�ˡ�����󤬲ݤ����뤳�Ȥ����롣</p>
+      <h3 id="hl.5.2">5.2.言語処理系とGCの結合関係</h3>
+      <p>通常の言語処理系はメモリアロケータが全資源を握っていると仮定する。このメモリアロケータを含む記憶領域管理機構に対して不要なメモリを自動的に回収するか、言語から回収するかを考える。すると言語から回収するには言語に記憶領域管理情報を扱う機能が必要となる。これは言語が扱うコンピュータの機構の抽象度が低くなるため、抽象度の高いプログラミング言語にはふかしたくない機能である。したがって、GCの依存度は言語の抽象度と関連すると考えられる。</p>
+      <p>一方、記憶領域管理機構は言語に要求され記憶領域を渡せばどのような手法をとってもよいブラックボックスになってる。そのためアルゴリズムの改良などが独自に行える。ただし、言語が要求する記憶領域に一定の規則(同一サイズなど)がある場合、アルゴリズムの効率化が図れる。</p>
+      <p>したがって記憶領域管理機構は言語の扱うデータに依存する。又、記憶領域管理にかかる時間はプログラマーから見ると予期しがたいものがあるため、この時間が一定ではなくばらつく場合はプログラム実行時のリアルタイム性が失われる。そのため言語実行に関する制約がある場合、記憶領域の手法に制約が課せられることがある。</p>
 
 
-      <h3 id="hl.5.3">5.3.�ץ��������ݼ�</h3>
-      <p>��������Ϥ�GC�Ȥΰ�¸�ط����θ����ȡ������Ϥ˿������ǡ�����¤���ɲä�����硢�������롼�Ȥ��ɲä������Τ�GC�˼��ä���ɬ�פ����뤳�Ȥ��狼�롣�롼�Ȥ���������¦�ǥ�󥯥ȥꥹ�ȤʤɤǴ�������Ф�����ѹ��������ꡢ�������ǡ�����¤�ΤȤ��Τ�GC��������Ф褤���Ȥ��狼�롣�ޤ�GC���ѹ�����gc_mark_object�����ҤȤĤǤ���Τǡ�GC��°�θ�������Ϥ��ݼ�Υ����Ȥϸ�������ϤΤߤξ����ݼ�Υ����Ȥȸ¤�ʤ��ᤤ���Ȥ���¬�Ǥ��롣</p>
+      <h3 id="hl.5.3">5.3.プログラムの保守</h3>
+      <p>言語処理系とGCとの依存関係を考慮すると、処理系に新しいデータ構造を追加した場合、新しいルートを追加した場合のみGCに手を加える必要があることがわかる。ルートを言語処理系側でリンクトリストなどで管理すればさらに変更点が減り、新しいデータ構造のときのみGCを修正すればよいことがわかる。またGCの変更点はgc_mark_objectただひとつであるので、GC付属の言語処理系の保守のコストは言語処理系のみの場合の保守のコストと限りなく近いことが推測できる。</p>
 
 
-      <h2 id="hl.6">6.�ޤȤ�</h2>
-      <p>GC��°��LISP�����Ϥ��������������ˤ�ꡢ�ݼ�ŪGC����Ѥ���¤��������Ϥ�GC�ϴ�����ʬΥ���Ƽ�����Ԥ��뤳�Ȥ��ǧ�Ǥ��������������ޡ�������ɥ���������GC�ʳ���GC�Υ��르�ꥺ����ݼ�Ū�Ǥʤ�GC�ξ���Ʊ�ͤ�ʬΥ���Ƽ�����Ԥ��뤫�μ¾ڤ��Ǥ��ʤ��ä���</p>
-      <p>GC�Υ��르�ꥺ��ˤ��ץ�����ߥ󥰥�������ˤɤΤ褦�����¤������뤫�򤢤餫�����ǧ�Ǥ���С�������GC��������볫ȯ�ԤˤȤäƸ��Ѥ�꤬���䤹���ʤ롣</p>
-      <p>����θ���Ǻ������������Ϥϰ�����GC���������Ǥ��ʤ��ä����ᡢ�⤦�ҤȤĤ����Ū��GC�Ǥ��륳�ԡ�GC�μ�����Ԥ����Ȥ䡢GC�μ¹Ի��֤�ʬ�����ƥꥢ�륿����������夵����ꥢ�륿����GC�ʤɤμ�����Ԥ����Ȥ�����θ������Ǥ��롣</p>
+      <h2 id="hl.6">6.まとめ</h2>
+      <p>GC付属のLISP処理系を作成した。これにより、保守的GCを採用する限り言語処理系とGCは完璧に分離して実装を行えることを確認できた。しかし、マークアンドスウィープGC以外のGCのアルゴリズムや保守的でないGCの場合に同様に分離して実装を行えるかの実証ができなかった。</p>
+      <p>GCのアルゴリズムによりプログラミングスタイルにどのように制限が生じるかをあらかじめ確認できれば、新たにGCを実装する開発者にとって見積もりがしやすくなる。</p>
+      <p>今回の研究で作成した処理系は一種類のGCしか実装できなかったため、もうひとつの代償的なGCであるコピーGCの実装を行うことや、GCの実行時間を分散してリアルタイム性を向上させるリアルタイムGCなどの実装を行うことが今後の研究課題である。</p>
 
 
-      <h2 id="hl.7">7.����ʸ��</h2>
+      <h2 id="hl.7">7.参考文献</h2>
         <div class="reference">
 	  <dl>
 	    <dt>[1] Revised5 Report on the Algorithmic Language Scheme
@@ -1306,17 +1306,17 @@ cat tarai.lisp  0.00s user 0.00s system 35% cpu 0.011 total
 		http://code.google.com/p/sigscheme/
 	      </a>
 	    </dt>
-	    <dt>[4] �ץ�����ߥ󥰸���SCHEME
-	      R.����� �ǥ������� �� ¼�� ���� ���� �ԥ����󥨥ǥ奱������� 
+	    <dt>[4] プログラミング言語SCHEME
+	      R.ケント ディヴィグ 著 村上 雅章 翻訳 ピアソンエデュケーション 
 	    </dt>
 	    <dt>[5] ANSI Common Lisp
-	      �ݡ��� ���쥢�� ��, ���� ���� , �ܲ� ů�� �������ԥ����󥨥ǥ奱������� 
+	      ポール グレアム 著, 久野 雅樹 , 須賀 哲夫 翻訳　ピアソンエデュケーション 
 	    </dt>
-	    <dt>[6] �׻����ץ������ι�¤�Ȳ��
-	      �������ɡ������� �����ޥ� , ����꡼ �����ޥ� , �ϥ���� �����֥륽�� ��, ���� �Ѱ� ����
-	      �ԥ����󥨥ǥ奱�������
+	    <dt>[6] 計算機プログラムの構造と解釈
+	      ジェラルド・ジェイ サスマン , ジュリー サスマン , ハロルド エイブルソン 著, 和田 英一 翻訳
+	      ピアソンエデュケーション
 	    </dt>
-	    <dt>[7] Ruby�����������ɴ������� HTML��
+	    <dt>[7] Rubyソースコード完全解説 HTML版
 	      <a href="http://i.loveruby.net/ja/rhg/book/">
 		http://i.loveruby.net/ja/rhg/book/
 	    </a>
@@ -1339,7 +1339,7 @@ cat tarai.lisp  0.00s user 0.00s system 35% cpu 0.011 total
 	  </dl>
 	</div>
 
-      <h2 id="a.1">��Ͽ1 ��������LISP�����ϤΥ�����������</h2>
+      <h2 id="a.1">付録1 作成したLISP処理系のソースコード</h2>
       <a href="./file/thesischeme.tar.gz">thesischeme.tar.gz</a>
 
     </div>
